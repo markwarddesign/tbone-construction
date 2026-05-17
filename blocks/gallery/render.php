@@ -5,8 +5,10 @@ $heading       = esc_html( $attributes['heading']      ?? 'Project Gallery' );
 $subheading    = esc_html( $attributes['subheading']   ?? '' );
 $limit         = (int)  ( $attributes['limit']         ?? 12 );
 $category_slug = sanitize_title( $attributes['categorySlug'] ?? '' );
+// When the editor invokes SSR it passes preview=1 so we render only the
+// data-driven portion (filters + grid) — heading is editable inline in edit.js.
+$preview       = ! empty( $attributes['preview'] );
 
-// Build the query.
 $query_args = [
     'post_type'      => 'tbc_project',
     'posts_per_page' => $limit > 0 ? $limit : -1,
@@ -25,15 +27,12 @@ if ( $category_slug ) {
 }
 $projects = new WP_Query( $query_args );
 
-// Categories for filter buttons (always show All + every term that's in use).
 $cat_terms = get_terms( [ 'taxonomy' => 'tbc_project_category', 'hide_empty' => true ] );
 $cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
-?>
-<div class="animate-in fade-in pt-16 pb-24 bg-[#faf8f5] min-h-screen" data-tbc-gallery>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <?php echo tbc_section_heading( $heading, $subheading ); ?>
 
-    <?php if ( $cat_terms ) : ?>
+/** Render the filter + grid portion (shared by full-frontend + editor preview). */
+$render_body = static function () use ( $cat_terms, $projects ): void {
+    if ( $cat_terms ) : ?>
       <div class="flex flex-wrap gap-3 mb-12 border-b border-stone-200 pb-6" data-tbc-gallery-filters>
         <button type="button" data-tbc-filter="" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-stone-900 text-white shadow-md">All</button>
         <?php foreach ( $cat_terms as $term ) : ?>
@@ -42,12 +41,12 @@ $cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
           </button>
         <?php endforeach; ?>
       </div>
-    <?php endif; ?>
+    <?php endif;
 
-    <?php if ( ! $projects->have_posts() ) : ?>
+    if ( ! $projects->have_posts() ) : ?>
       <div class="bg-white border border-stone-200 p-12 text-center text-stone-500">
         <p class="font-serif text-2xl mb-2">No projects yet</p>
-        <p class="text-sm">Add some in <strong>Projects → Add New</strong>.</p>
+        <p class="text-sm">Add some in <strong>Projects &rarr; Add New</strong>.</p>
       </div>
     <?php else : ?>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 tbc-gallery-grid" data-tbc-gallery-grid>
@@ -76,7 +75,7 @@ $cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
             </div>
           </a>
 
-          <template data-project-data="<?php echo (int) $pid; ?>"><?php
+          <script type="application/json" data-project-data="<?php echo (int) $pid; ?>"><?php
             echo wp_json_encode( [
                 'id'        => (int) $pid,
                 'title'     => get_the_title(),
@@ -85,10 +84,22 @@ $cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
                 'content'   => apply_filters( 'the_content', get_the_content() ),
                 'images'    => $images,
             ] );
-          ?></template>
+          ?></script>
         <?php endwhile; wp_reset_postdata(); ?>
       </div>
-    <?php endif; ?>
+    <?php endif;
+};
+
+// Editor preview: render only the data-driven portion (no wrapper, no heading, no lightbox).
+if ( $preview ) {
+    $render_body();
+    return;
+}
+?>
+<div class="animate-in fade-in pt-16 pb-24 bg-[#faf8f5] min-h-screen" data-tbc-gallery>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <?php echo tbc_section_heading( $heading, $subheading ); ?>
+    <?php $render_body(); ?>
   </div>
 
   <!-- Lightbox shell -->

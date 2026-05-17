@@ -2,15 +2,22 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "tbone-construction/contact",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "title": "Contact (CF7)",
     "category": "tbone-construction",
-    "description": "Contact page with info sidebar and a Contact Form 7 form picker.",
+    "description": "Contact page section with editable copy, info sidebar, and a Contact Form 7 form picker.",
     "textdomain": "tbone-construction",
     "editorScript": "file:../../build/contact/index.js",
     "render": "file:./render.php",
     "attributes": {
-        "cf7FormId": { "type": "number", "default": 0 }
+        "heading":        { "type": "string", "default": "Start Your Project" },
+        "subheading":     { "type": "string", "default": "Free, no obligation consultations. We're excited to hear about your vision for your home." },
+        "sidebarHeading": { "type": "string", "default": "Contact Details" },
+        "callLabel":      { "type": "string", "default": "Call Us" },
+        "emailLabel":     { "type": "string", "default": "Email Us" },
+        "areaLabel":      { "type": "string", "default": "Service Area" },
+        "areaText":       { "type": "string", "default": "Proudly serving families and upgrading homes across the Idaho region." },
+        "cf7FormId":      { "type": "number",  "default": 0 }
     },
     "supports": { "html": false, "align": [ "full" ] }
 }

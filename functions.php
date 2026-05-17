@@ -7,6 +7,7 @@ define( 'TBONE_CONSTRUCTION_URI', get_template_directory_uri() );
 
 require_once TBONE_CONSTRUCTION_DIR . '/inc/svg.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/data.php';
+require_once TBONE_CONSTRUCTION_DIR . '/inc/nav-walker.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/post-types.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/setup.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/theme-settings.php';

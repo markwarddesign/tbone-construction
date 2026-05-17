@@ -49,26 +49,77 @@ function tbone_construction_render_settings_page(): void {
         <?php settings_errors( 'tbone_construction_settings' ); ?>
 
         <?php if ( isset( $_GET['tbone-setup-done'] ) ) :
-            $count = (int) $_GET['tbone-setup-done'];
+            $count    = (int) $_GET['tbone-setup-done'];
+            $subpages = isset( $_GET['tbone-subpages'] ) ? (int) $_GET['tbone-subpages'] : 0;
             ?>
             <div class="notice notice-success is-dismissible">
                 <p><?php
-                    if ( $count > 0 ) {
-                        printf( esc_html__( 'Site setup ran. %d page(s) created.', 'tbone-construction' ), $count );
-                    } else {
-                        esc_html_e( 'Site setup ran. All required pages already existed.', 'tbone-construction' );
+                    $bits = [];
+                    $bits[] = $count > 0
+                        ? sprintf( _n( '%d main page created.', '%d main pages created.', $count, 'tbone-construction' ), $count )
+                        : __( 'All main pages already existed.', 'tbone-construction' );
+                    if ( $subpages > 0 ) {
+                        $bits[] = sprintf( _n( '%d service sub-page created.', '%d service sub-pages created.', $subpages, 'tbone-construction' ), $subpages );
                     }
+                    echo esc_html( implode( ' ', $bits ) );
+                ?></p>
+            </div>
+        <?php endif; ?>
+
+        <?php if ( isset( $_GET['tbone-content-set'] ) ) :
+            $count    = (int) $_GET['tbone-content-set'];
+            $subpages = isset( $_GET['tbone-subpages'] ) ? (int) $_GET['tbone-subpages'] : 0;
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php
+                    $bits = [];
+                    if ( $count > 0 ) {
+                        $bits[] = sprintf( _n( 'Reset content on %d page.', 'Reset content on %d pages.', $count, 'tbone-construction' ), $count );
+                    }
+                    if ( $subpages > 0 ) {
+                        $bits[] = sprintf( _n( 'Added %d new service sub-page.', 'Added %d new service sub-pages.', $subpages, 'tbone-construction' ), $subpages );
+                    }
+                    if ( ! $bits ) {
+                        $bits[] = __( 'Already up to date — nothing to update.', 'tbone-construction' );
+                    }
+                    echo esc_html( implode( ' ', $bits ) );
                 ?></p>
             </div>
         <?php endif; ?>
 
         <hr/>
         <h2 class="title"><?php esc_html_e( 'Site Pages', 'tbone-construction' ); ?></h2>
-        <p><?php esc_html_e( 'Creates Home, Our Story, Craft & Services, Project Gallery, Local Reviews, and Contact pages (if missing), sets Home as the front page, and assigns a Primary menu. Safe to re-run.', 'tbone-construction' ); ?></p>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-bottom:24px;">
+        <p><?php esc_html_e( 'Creates the main pages (Home, Our Story, Services, Gallery, Reviews, Contact) and the six service sub-pages (decks, canopies, siding, windows, renovations, sheds). Safe to re-run — existing pages are not touched.', 'tbone-construction' ); ?></p>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin:0 12px 24px 0;">
             <?php wp_nonce_field( 'tbone_construction_reset_setup' ); ?>
             <input type="hidden" name="action" value="tbone_construction_reset_setup" />
             <button type="submit" class="button button-secondary"><?php esc_html_e( 'Create / Repair Site Pages', 'tbone-construction' ); ?></button>
+        </form>
+
+        <p style="margin-top:16px;color:#a00;"><strong><?php esc_html_e( 'Destructive:', 'tbone-construction' ); ?></strong>
+        <?php esc_html_e( 'Overwrites the body content of every main page with the latest seed. Use this when block markup has changed (e.g. after a theme update) and existing pages look wrong. Custom edits will be lost.', 'tbone-construction' ); ?></p>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-bottom:24px;" onsubmit="return confirm( <?php echo esc_attr( wp_json_encode( __( 'This will replace the content of all main pages (Home, Our Story, Services, Gallery, Reviews, Contact) with the default seed. Continue?', 'tbone-construction' ) ) ); ?> );">
+            <?php wp_nonce_field( 'tbone_construction_reseed_content' ); ?>
+            <input type="hidden" name="action" value="tbone_construction_reseed_content" />
+            <button type="submit" class="button button-primary" style="background:#a00;border-color:#a00;"><?php esc_html_e( 'Reset Page Content (destructive)', 'tbone-construction' ); ?></button>
+        </form>
+
+        <?php if ( isset( $_GET['tbone-projects-wiped'] ) ) :
+            $wiped = (int) $_GET['tbone-projects-wiped'];
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php printf( esc_html__( 'Deleted %d old project(s) and reseeded with sample projects from the media library.', 'tbone-construction' ), $wiped ); ?></p>
+            </div>
+        <?php endif; ?>
+
+        <hr/>
+        <h2 class="title"><?php esc_html_e( 'Projects', 'tbone-construction' ); ?></h2>
+        <p style="color:#a00;"><strong><?php esc_html_e( 'Destructive:', 'tbone-construction' ); ?></strong>
+        <?php esc_html_e( 'Deletes every existing Project (tbc_project) post and reseeds with the current sample list. Featured images and gallery shots are pulled from your Media Library by filename. Use this after uploading new project photos or to start over.', 'tbone-construction' ); ?></p>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-bottom:24px;" onsubmit="return confirm( <?php echo esc_attr( wp_json_encode( __( 'This will permanently delete ALL existing Projects and replace them with the seed list. Continue?', 'tbone-construction' ) ) ); ?> );">
+            <?php wp_nonce_field( 'tbone_construction_reset_projects' ); ?>
+            <input type="hidden" name="action" value="tbone_construction_reset_projects" />
+            <button type="submit" class="button button-primary" style="background:#a00;border-color:#a00;"><?php esc_html_e( 'Wipe & Reseed Projects (destructive)', 'tbone-construction' ); ?></button>
         </form>
 
         <form method="post" action="options.php">

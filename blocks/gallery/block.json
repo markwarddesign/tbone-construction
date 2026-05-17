@@ -14,7 +14,8 @@
         "heading":    { "type": "string", "default": "Project Gallery" },
         "subheading": { "type": "string", "default": "A collection of our recent craftsmanship. Select a category below to filter." },
         "limit":      { "type": "number", "default": 12 },
-        "categorySlug": { "type": "string", "default": "" }
+        "categorySlug": { "type": "string", "default": "" },
+        "preview":    { "type": "boolean", "default": false }
     },
     "supports": { "html": false, "align": [ "full" ] }
 }

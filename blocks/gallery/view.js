@@ -32,12 +32,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		items.forEach( ( item ) => {
 			item.addEventListener( 'click', ( e ) => {
 				if ( ! lightbox ) return;
-				e.preventDefault();
 				const pid = item.getAttribute( 'data-project-id' );
-				const tpl = gallery.querySelector( `template[data-project-data="${ pid }"]` );
-				if ( ! tpl ) return;
+				const node = gallery.querySelector( `script[data-project-data="${ pid }"]` );
+				if ( ! node ) {
+					// No data — let the link navigate normally to the single page.
+					return;
+				}
 				let data;
-				try { data = JSON.parse( tpl.innerHTML ); } catch ( _ ) { return; }
+				try { data = JSON.parse( node.textContent ); } catch ( _ ) { return; }
+				e.preventDefault();
 				openLightbox( data );
 			} );
 		} );
