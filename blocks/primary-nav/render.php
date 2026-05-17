@@ -22,6 +22,8 @@ $menu_html = has_nav_menu( $location ) ? wp_nav_menu( [
     'container'      => false,
     'echo'           => false,
     'items_wrap'     => '<ul class="flex space-x-1 items-center list-none m-0 p-0">%3$s</ul>',
+    'walker'         => new Tbc_Primary_Nav_Walker(),
+    'depth'          => 0,
     'fallback_cb'    => false,
 ] ) : '';
 
@@ -49,6 +51,8 @@ $mobile_menu_html = has_nav_menu( $location ) ? wp_nav_menu( [
     'container'      => false,
     'echo'           => false,
     'items_wrap'     => '<ul class="flex flex-col list-none m-0 p-0">%3$s</ul>',
+    'walker'         => new Tbc_Mobile_Nav_Walker(),
+    'depth'          => 0,
     'fallback_cb'    => false,
 ] ) : '';
 

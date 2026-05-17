@@ -61,7 +61,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 					<ServerSideRender
 						block={ metadata.name }
-						attributes={ attributes }
+						attributes={ { ...attributes, preview: true } }
 						EmptyResponsePlaceholder={ () => (
 							<div className="bg-white border border-stone-200 p-12 text-center text-stone-500">
 								<p className="font-serif text-2xl mb-2">No projects yet</p>

@@ -3,6 +3,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	const toggle = document.querySelector( '[data-tbc-toggle]' );
 	const mobile = document.querySelector( '[data-tbc-mobile]' );
 
+	// Mobile drawer open/close
 	if ( toggle && mobile ) {
 		const iconMenu  = toggle.querySelector( '[data-tbc-icon-menu]' );
 		const iconClose = toggle.querySelector( '[data-tbc-icon-close]' );
@@ -16,6 +17,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	}
 
+	// Mobile submenu accordion toggles
+	document.querySelectorAll( '[data-tbc-mobile-toggle]' ).forEach( ( btn ) => {
+		btn.addEventListener( 'click', ( e ) => {
+			e.preventDefault();
+			const parent = btn.closest( '[data-tbc-mobile-parent]' );
+			const sub    = parent?.querySelector( ':scope > [data-tbc-mobile-sub]' );
+			if ( ! sub ) return;
+			const open = sub.classList.toggle( 'hidden' ) === false;
+			btn.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+			btn.style.transform = open ? 'rotate(180deg)' : '';
+		} );
+	} );
+
+	// Sticky-nav style on scroll
 	if ( nav ) {
 		const onScroll = () => {
 			const scrolled = window.scrollY > 20;

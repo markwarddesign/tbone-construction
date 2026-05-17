@@ -111,6 +111,35 @@ add_action( 'save_post_tbc_project', static function ( int $post_id ): void {
     update_post_meta( $post_id, '_tbc_gallery_ids', implode( ',', $ids ) );
 } );
 
+/**
+ * Look up an attachment in the media library by its original filename
+ * (e.g. "Canyondeck.jpg") and return its post ID, or 0 if not found.
+ * Result is per-request memoized.
+ */
+function tbc_image_id( string $filename ): int {
+    static $cache = [];
+    if ( '' === $filename ) return 0;
+    if ( isset( $cache[ $filename ] ) ) return $cache[ $filename ];
+
+    global $wpdb;
+    $like = '%/' . $wpdb->esc_like( $filename );
+    $id = (int) $wpdb->get_var( $wpdb->prepare(
+        "SELECT post_id FROM {$wpdb->postmeta}
+         WHERE meta_key = '_wp_attached_file' AND meta_value LIKE %s
+         LIMIT 1",
+        $like
+    ) );
+
+    $cache[ $filename ] = $id;
+    return $id;
+}
+
+/** Filename → URL (returns '' if not found in media library). */
+function tbc_image( string $filename, string $size = 'large' ): string {
+    $id = tbc_image_id( $filename );
+    return $id ? (string) wp_get_attachment_image_url( $id, $size ) : '';
+}
+
 /** Helper: collected gallery image URLs (featured + extras). */
 function tbc_project_gallery_urls( int $post_id, string $size = 'large' ): array {
     $urls = [];
