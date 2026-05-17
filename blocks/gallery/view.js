@@ -1,0 +1,87 @@
+document.addEventListener( 'DOMContentLoaded', () => {
+	document.querySelectorAll( '[data-tbc-gallery]' ).forEach( ( gallery ) => {
+		const filters = gallery.querySelectorAll( '[data-tbc-filter]' );
+		const items   = gallery.querySelectorAll( '.tbc-gallery-item' );
+		const lightbox      = gallery.querySelector( '[data-tbc-lightbox]' );
+		const lightboxBody  = lightbox?.querySelector( '.tbc-lightbox__body' );
+		const lightboxClose = lightbox?.querySelectorAll( '[data-tbc-lightbox-close]' );
+
+		const activeBtn = [ 'bg-stone-900', 'text-white', 'shadow-md' ];
+		const idleBtn   = [ 'bg-white', 'text-stone-600', 'border', 'border-stone-200', 'hover:border-stone-400', 'hover:text-stone-900' ];
+
+		// Filter buttons
+		filters.forEach( ( btn ) => {
+			btn.addEventListener( 'click', () => {
+				const slug = btn.getAttribute( 'data-tbc-filter' );
+
+				filters.forEach( ( b ) => {
+					idleBtn.forEach( ( c ) => b.classList.add( c ) );
+					activeBtn.forEach( ( c ) => b.classList.remove( c ) );
+				} );
+				idleBtn.forEach( ( c ) => btn.classList.remove( c ) );
+				activeBtn.forEach( ( c ) => btn.classList.add( c ) );
+
+				items.forEach( ( item ) => {
+					const cat = item.getAttribute( 'data-category' );
+					item.style.display = ( ! slug || cat === slug ) ? '' : 'none';
+				} );
+			} );
+		} );
+
+		// Lightbox open
+		items.forEach( ( item ) => {
+			item.addEventListener( 'click', ( e ) => {
+				if ( ! lightbox ) return;
+				e.preventDefault();
+				const pid = item.getAttribute( 'data-project-id' );
+				const tpl = gallery.querySelector( `template[data-project-data="${ pid }"]` );
+				if ( ! tpl ) return;
+				let data;
+				try { data = JSON.parse( tpl.innerHTML ); } catch ( _ ) { return; }
+				openLightbox( data );
+			} );
+		} );
+
+		// Lightbox close
+		lightboxClose?.forEach( ( el ) => el.addEventListener( 'click', closeLightbox ) );
+		document.addEventListener( 'keydown', ( e ) => {
+			if ( e.key === 'Escape' && lightbox && ! lightbox.classList.contains( 'hidden' ) ) closeLightbox();
+		} );
+
+		function openLightbox( data ) {
+			if ( ! lightboxBody || ! lightbox ) return;
+			const hasContent = ( data.content && data.content.replace( /<[^>]+>/g, '' ).trim().length > 0 );
+			const hasExtra   = ( Array.isArray( data.images ) && data.images.length > 1 );
+
+			const main      = data.images?.[0] || '';
+			const thumbnails = ( data.images || [] ).slice( 1 );
+
+			lightboxBody.innerHTML = `
+				${ data.category ? `<span class="tbc-lightbox__cat">${ escapeHtml( data.category ) }</span>` : '' }
+				<h2 class="tbc-lightbox__title">${ escapeHtml( data.title || '' ) }</h2>
+				${ main ? `<div class="tbc-lightbox__main"><img src="${ main }" alt="${ escapeHtml( data.title || '' ) }" /></div>` : '' }
+				${ hasContent ? `<div class="tbc-lightbox__content">${ data.content }</div>` : '' }
+				${ thumbnails.length ? `<div class="tbc-lightbox__thumbs">${ thumbnails.map( ( u ) => `<img src="${ u }" alt="" />` ).join( '' ) }</div>` : '' }
+				${ ( hasContent || hasExtra ) && data.permalink
+					? `<a class="tbc-lightbox__view" href="${ data.permalink }">View full project →</a>`
+					: '' }
+			`;
+
+			lightbox.classList.remove( 'hidden' );
+			lightbox.setAttribute( 'aria-hidden', 'false' );
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeLightbox() {
+			if ( ! lightbox ) return;
+			lightbox.classList.add( 'hidden' );
+			lightbox.setAttribute( 'aria-hidden', 'true' );
+			if ( lightboxBody ) lightboxBody.innerHTML = '';
+			document.body.style.overflow = '';
+		}
+
+		function escapeHtml( s ) {
+			return String( s ).replace( /[&<>"']/g, ( c ) => ( { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ c ] ) );
+		}
+	} );
+} );

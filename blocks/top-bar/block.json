@@ -1,0 +1,13 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/top-bar",
+    "version": "2.0.0",
+    "title": "Top Bar",
+    "category": "tbone-construction",
+    "description": "Dark ink-colored bar with phone, email, and 'Locally Owned' tagline.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/top-bar/index.js",
+    "render": "file:./render.php",
+    "supports": { "html": false, "inserter": true, "align": false }
+}

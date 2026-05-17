@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/services",
+    "version": "3.0.0",
+    "title": "Services Grid",
+    "category": "tbone-construction",
+    "description": "Section heading + grid of editable Service Cards.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/services/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading":    { "type": "string", "default": "Our Craft & Services" },
+        "subheading": { "type": "string", "default": "All completed with the same craftsmanship and warranty backing suited for Idaho's tough weather." },
+        "ctaText":    { "type": "string", "default": "Explore All Options" },
+        "ctaUrl":     { "type": "string", "default": "/services" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

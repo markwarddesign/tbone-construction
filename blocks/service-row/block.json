@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/service-row",
+    "version": "1.0.0",
+    "title": "Service Row",
+    "category": "tbone-construction",
+    "description": "A single detailed service row for the Services Detail block.",
+    "textdomain": "tbone-construction",
+    "parent": [ "tbone-construction/services-detail" ],
+    "editorScript": "file:../../build/service-row/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "icon":        { "type": "string", "default": "hammer" },
+        "title":       { "type": "string", "default": "Service Title" },
+        "description": { "type": "string", "default": "Long-form service description." },
+        "features":    { "type": "string", "default": "Feature one\nFeature two\nFeature three" },
+        "imageUrl":    { "type": "string", "default": "" },
+        "imageAlt":    { "type": "string", "default": "" }
+    },
+    "supports": { "html": false, "inserter": false, "reusable": false }
+}
