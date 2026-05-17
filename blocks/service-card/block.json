@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/service-card",
+    "version": "1.0.0",
+    "title": "Service Card",
+    "category": "tbone-construction",
+    "description": "A single service card for the Services Grid.",
+    "textdomain": "tbone-construction",
+    "parent": [ "tbone-construction/services" ],
+    "editorScript": "file:../../build/service-card/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "icon":        { "type": "string", "default": "hammer" },
+        "title":       { "type": "string", "default": "Service Title" },
+        "description": { "type": "string", "default": "Short description of this service offering." },
+        "linkText":    { "type": "string", "default": "Read More" },
+        "linkUrl":     { "type": "string", "default": "/services" }
+    },
+    "supports": { "html": false, "inserter": false, "reusable": false }
+}

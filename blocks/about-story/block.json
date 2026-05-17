@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/about-story",
+    "version": "2.0.0",
+    "title": "About Story",
+    "category": "tbone-construction",
+    "description": "About page story section with editable paragraphs, image, and TrexPro badge.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/about-story/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading":     { "type": "string", "default": "Our Story & Approach" },
+        "subheading":  { "type": "string", "default": "Professional. Reliable. Built for Idaho." },
+        "para1":       { "type": "string", "default": "With over <strong>25 years of hands-on experience</strong>, we help Idaho families create beautiful, functional homes. Starting with outdoor living spaces, covered patios, decks and railings, our expertise spans across total exterior renovations." },
+        "para2":       { "type": "string", "default": "We also handle window replacements, home renovations, siding installation, and shed builds. All completed with the same craftsmanship and warranty backing suited for Idaho's tough weather. Projects are tailored specifically to your budget and lifestyle." },
+        "badgeTitle":  { "type": "string", "default": "Licensed & Insured" },
+        "badgeBody":   { "type": "string", "default": "We are committed to making your vision a reality. You can trust our local team to handle your home with respect, delivering dependable and efficient top-quality work from the first consultation to the final sweep." },
+        "ctaText":     { "type": "string", "default": "Schedule a Consultation" },
+        "ctaUrl":      { "type": "string", "default": "/contact" },
+        "imageUrl":    { "type": "string", "default": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+        "imageAlt":    { "type": "string", "default": "" },
+        "trexTitle":   { "type": "string", "default": "TrexPro® Partner" },
+        "trexBody":    { "type": "string", "default": "As a TrexPro® professional and the area's only certified Trex RainEscape® installer, we offer a range of composite decking brands to match your preferences." },
+        "trexLinkText":{ "type": "string", "default": "Order Trex Samples" },
+        "trexLinkUrl": { "type": "string", "default": "https://www.trex.com" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

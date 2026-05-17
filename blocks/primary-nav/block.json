@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/primary-nav",
+    "version": "2.0.0",
+    "title": "Primary Navigation",
+    "category": "tbone-construction",
+    "description": "Main site nav with logo, primary menu, and 'Get an Estimate' CTA button.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/primary-nav/index.js",
+    "viewScript":   "file:../../build/primary-nav/view.js",
+    "render":       "file:./render.php",
+    "attributes": {
+        "logoId":  { "type": "number", "default": 0 },
+        "logoUrl": { "type": "string", "default": "" },
+        "logoAlt": { "type": "string", "default": "" },
+        "ctaText": { "type": "string", "default": "Get an Estimate" },
+        "ctaUrl":  { "type": "string", "default": "/contact" }
+    },
+    "supports": { "html": false, "inserter": true, "align": false }
+}

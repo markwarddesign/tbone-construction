@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/hero",
+    "version": "2.0.0",
+    "title": "Hero (Home)",
+    "category": "tbone-construction",
+    "description": "Home page hero — headline, body, two CTAs and a stacked photo pair.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/hero/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "badge":      { "type": "string", "default": "Built for Idaho Weather" },
+        "headingTop": { "type": "string", "default": "Crafting Idaho's" },
+        "headingAccent": { "type": "string", "default": "Outdoor Spaces." },
+        "body":       { "type": "string", "default": "With over 25 years of hands-on experience, we help local families create beautiful, functional homes. From custom decks and covered patios to full exterior siding and renovations." },
+        "primaryCtaText": { "type": "string", "default": "Discuss Your Project" },
+        "primaryCtaUrl":  { "type": "string", "default": "/contact" },
+        "secondaryCtaText": { "type": "string", "default": "View Our Craft" },
+        "secondaryCtaUrl":  { "type": "string", "default": "/services" },
+        "image1Url":  { "type": "string", "default": "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+        "image2Url":  { "type": "string", "default": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

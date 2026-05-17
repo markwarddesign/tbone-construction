@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/gallery",
+    "version": "3.0.0",
+    "title": "Project Gallery",
+    "category": "tbone-construction",
+    "description": "Filterable project gallery driven by the Projects custom post type. Items open in a lightbox; full details live at /projects/{slug}.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/gallery/index.js",
+    "viewScript":   "file:../../build/gallery/view.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading":    { "type": "string", "default": "Project Gallery" },
+        "subheading": { "type": "string", "default": "A collection of our recent craftsmanship. Select a category below to filter." },
+        "limit":      { "type": "number", "default": 12 },
+        "categorySlug": { "type": "string", "default": "" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/trex-partnership",
+    "version": "2.0.0",
+    "title": "Trex Partnership",
+    "category": "tbone-construction",
+    "description": "Dark TrexPro partnership band with samples link.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/trex-partnership/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "badge":     { "type": "string", "default": "TrexPro® Partner 2024" },
+        "headline1": { "type": "string", "default": "The Area's Only Certified" },
+        "headline2": { "type": "string", "default": "Trex RainEscape®" },
+        "headline3": { "type": "string", "default": "Installer." },
+        "body":      { "type": "string", "default": "We offer a range of composite decking brands to match your preferences. Our advanced RainEscape drainage system creates dry, usable space beneath your deck, and we partner with local specialists so you get everything you need from a single, reliable source." },
+        "sidebarText": { "type": "string", "default": "Explore materials and plan your dream deck with Trex directly." },
+        "buttonText":  { "type": "string", "default": "Order Trex Samples" },
+        "buttonUrl":   { "type": "string", "default": "https://www.trex.com" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

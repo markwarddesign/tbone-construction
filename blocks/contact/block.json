@@ -1,0 +1,16 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/contact",
+    "version": "3.0.0",
+    "title": "Contact (CF7)",
+    "category": "tbone-construction",
+    "description": "Contact page with info sidebar and a Contact Form 7 form picker.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/contact/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "cf7FormId": { "type": "number", "default": 0 }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

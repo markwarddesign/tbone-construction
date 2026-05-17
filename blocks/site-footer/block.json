@@ -1,0 +1,13 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/site-footer",
+    "version": "2.0.0",
+    "title": "Site Footer",
+    "category": "tbone-construction",
+    "description": "Full site footer with brand column, navigation, contact info and Trex samples button.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/site-footer/index.js",
+    "render": "file:./render.php",
+    "supports": { "html": false, "inserter": true, "align": false }
+}

@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/testimonial-quote",
+    "version": "1.0.0",
+    "title": "Testimonial Quote",
+    "category": "tbone-construction",
+    "description": "Dark single-quote band with attribution and CTA.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/testimonial-quote/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "quote":        { "type": "string", "default": "He is dependable, efficient, honest and does top quality work. I would definitely use his services again." },
+        "attribution":  { "type": "string", "default": "Tangela S. (Local Client)" },
+        "subtitle":     { "type": "string", "default": "We treat every home like our own. Read what your neighbors are saying." },
+        "ctaText":      { "type": "string", "default": "Read All Reviews" },
+        "ctaUrl":       { "type": "string", "default": "/reviews" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

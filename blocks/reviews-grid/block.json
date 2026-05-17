@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/reviews-grid",
+    "version": "2.0.0",
+    "title": "Reviews Grid",
+    "category": "tbone-construction",
+    "description": "Editable reviews grid with average-rating card.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/reviews-grid/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading":      { "type": "string", "default": "Word of Mouth" },
+        "subheading":   { "type": "string", "default": "Don't just take our word for it. Read what your Idaho neighbors have to say about working with Travis and the team." },
+        "averageScore": { "type": "string", "default": "4.9 / 5.0" },
+        "averageLabel": { "type": "string", "default": "Average Local Rating" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

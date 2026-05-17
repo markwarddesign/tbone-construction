@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  background-color: #faf8f5;
+  color: #1c1917;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+::selection { background: #c25e24; color: #fff; }
+
+/* Global resets — strip default WP block margins that introduce vertical gaps */
+.wp-block-template-part > * + * { margin-top: 0; }
+.wp-site-blocks > * + * { margin-top: 0 !important; }
+
+/* Subtle entrance animation used by .animate-in fade-in */
+@keyframes tbc-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-in.fade-in { animation: tbc-fade-in 0.7s ease both; }
+
+/* Decorative blueprint dot grid background utility */
+.tbc-dot-grid {
+  background-image: radial-gradient(#d6d3d1 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================================
+   Gallery Lightbox
+   ============================================================ */
+
+.tbc-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.tbc-lightbox.hidden { display: none; }
+
+.tbc-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 41, 38, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+.tbc-lightbox__panel {
+  position: relative;
+  background: #faf8f5;
+  max-width: 56rem;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  border: 1px solid #e7e5e4;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 2.5rem;
+}
+
+.tbc-lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #1f2926;
+  color: #fff;
+  border: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.tbc-lightbox__close:hover { background: #c25e24; }
+
+.tbc-lightbox__cat {
+  display: inline-block;
+  color: #c25e24;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.tbc-lightbox__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #1c1917;
+  margin: 0 0 1.5rem;
+}
+
+.tbc-lightbox__main img {
+  width: 100%;
+  height: auto;
+  border: 8px solid #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.tbc-lightbox__content {
+  color: #44403c;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.tbc-lightbox__content > * + * { margin-top: 1rem; }
+
+.tbc-lightbox__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tbc-lightbox__thumbs img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid #e7e5e4;
+}
+
+.tbc-lightbox__view {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.875rem 2rem;
+  background: #c25e24;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid #c25e24;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tbc-lightbox__view:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 0 #7a3b16;
+}
+
+/* Gallery polaroid rotations — alternating tilt per child */
+.tbc-gallery-grid > *:nth-child(4n+1) { transform: rotate(1deg); }
+.tbc-gallery-grid > *:nth-child(4n+2) { transform: rotate(-1deg); }
+.tbc-gallery-grid > *:nth-child(4n+3) { transform: rotate(2deg); }
+.tbc-gallery-grid > *:nth-child(4n+4) { transform: rotate(-2deg); }
+.tbc-gallery-grid > *:hover            { transform: translateY(-8px); z-index: 10; }
+
+/* Alternating service-row direction */
+.tbc-service-row:nth-child(even) {
+  flex-direction: column-reverse;
+}
+@media (min-width: 768px) {
+  .tbc-service-row:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+}
+
+/* ============================================================
+   Contact Form 7 styling bridge
+   ============================================================ */
+
+.tbc-cf7-wrapper .wpcf7-form > p {
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tbc-cf7-wrapper label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #44403c;
+}
+
+.tbc-cf7-wrapper input[type="text"],
+.tbc-cf7-wrapper input[type="email"],
+.tbc-cf7-wrapper input[type="tel"],
+.tbc-cf7-wrapper input[type="url"],
+.tbc-cf7-wrapper input[type="number"],
+.tbc-cf7-wrapper select,
+.tbc-cf7-wrapper textarea {
+  width: 100%;
+  background: #faf8f5;
+  border: 1px solid #e7e5e4;
+  padding: 1rem;
+  color: #1c1917;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tbc-cf7-wrapper textarea { resize: vertical; min-height: 8rem; }
+.tbc-cf7-wrapper select { appearance: none; cursor: pointer; }
+
+.tbc-cf7-wrapper input:focus,
+.tbc-cf7-wrapper select:focus,
+.tbc-cf7-wrapper textarea:focus {
+  outline: none;
+  border-color: #c25e24;
+  box-shadow: 0 0 0 1px #c25e24;
+}
+
+.tbc-cf7-wrapper .wpcf7-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2.5rem;
+  background: #c25e24;
+  color: #fff;
+  border: 2px solid #c25e24;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tbc-cf7-wrapper .wpcf7-submit:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 0 #7a3b16;
+}
+
+.tbc-cf7-wrapper .wpcf7-response-output {
+  border: 1px solid #c25e24;
+  padding: 1rem;
+  margin: 1.5rem 0 0;
+  color: #1c1917;
+}
+
+.tbc-cf7-wrapper .wpcf7-not-valid-tip { color: #c25e24; font-size: 0.875rem; }
+.tbc-cf7-wrapper .wpcf7-spinner { background-color: #c25e24; }
