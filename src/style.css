@@ -25,6 +25,48 @@ html, body {
 }
 
 /* ============================================================
+   Hero (Full-Width Image) — transparent white nav overlay
+   ============================================================ */
+
+/* Pull the hero up behind the sticky nav so the image extends to the
+   top of the viewport. The hero has generous internal padding so the
+   headline never sits under the nav. */
+.wp-site-blocks .tbc-hero-overlay { margin-top: -96px; }
+@media (max-width: 639px) {
+  .wp-site-blocks .tbc-hero-overlay { margin-top: -80px; }
+}
+
+/* When the nav is sitting over the hero, swap to a glassy white look. */
+.tbc-nav.tbc-nav-overlay,
+.tbc-nav.tbc-nav-overlay.shadow-md {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.tbc-nav.tbc-nav-overlay a:not(.tbc-nav-cta) {
+  color: #ffffff !important;
+}
+.tbc-nav.tbc-nav-overlay a:not(.tbc-nav-cta):hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+.tbc-nav.tbc-nav-overlay .border-l {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+.tbc-nav.tbc-nav-overlay [data-tbc-toggle] {
+  color: #ffffff !important;
+}
+.tbc-nav.tbc-nav-overlay [data-tbc-toggle]:hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+.tbc-nav.tbc-nav-overlay img {
+  filter: brightness(0) invert(1);
+}
+.tbc-nav.tbc-nav-overlay .text-\[\#c25e24\] {
+  color: #ffffff !important;
+}
+
+/* ============================================================
    Gallery Lightbox
    ============================================================ */
 
