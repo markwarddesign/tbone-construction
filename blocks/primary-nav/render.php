@@ -93,7 +93,7 @@ if ( ! $mobile_menu_html ) {
             <div class="hidden md:flex space-x-1 items-center">
                 <?php echo $menu_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 <div class="pl-4 ml-2 border-l border-stone-300">
-                    <a href="<?php echo esc_url( $cta_url ); ?>" class="inline-flex items-center justify-center py-2.5 px-6 text-sm font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#7a3b16]">
+                    <a href="<?php echo esc_url( $cta_url ); ?>" class="tbc-nav-cta inline-flex items-center justify-center py-2.5 px-6 text-sm font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#7a3b16]">
                         <?php echo esc_html( $cta_text ); ?>
                     </a>
                 </div>

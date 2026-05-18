@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/hero-fullwidth",
+    "version": "1.0.0",
+    "title": "Hero (Full-Width Image)",
+    "category": "tbone-construction",
+    "description": "Full-bleed image hero — headline, body, two CTAs over a single background image. Pairs with a transparent white nav.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/hero-fullwidth/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "badge":          { "type": "string", "default": "Built for Idaho Weather" },
+        "headingTop":     { "type": "string", "default": "Crafting Idaho's" },
+        "headingAccent":  { "type": "string", "default": "Outdoor Spaces." },
+        "body":           { "type": "string", "default": "With over 25 years of hands-on experience, we help local families create beautiful, functional homes. From custom decks and covered patios to full exterior siding and renovations." },
+        "primaryCtaText": { "type": "string", "default": "Discuss Your Project" },
+        "primaryCtaUrl":  { "type": "string", "default": "/contact" },
+        "secondaryCtaText": { "type": "string", "default": "View Our Craft" },
+        "secondaryCtaUrl":  { "type": "string", "default": "/services" },
+        "imageUrl":       { "type": "string", "default": "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" },
+        "imageId":        { "type": "number", "default": 0 },
+        "minHeight":      { "type": "string", "default": "85vh" },
+        "align":          { "type": "string", "default": "full" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

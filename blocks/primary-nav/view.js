@@ -32,12 +32,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Sticky-nav style on scroll
 	if ( nav ) {
+		const heroOverlay = document.querySelector( '.tbc-hero-overlay' );
+
 		const onScroll = () => {
 			const scrolled = window.scrollY > 20;
 			nav.classList.toggle( 'shadow-md', scrolled );
 			nav.classList.toggle( 'backdrop-blur-sm', scrolled );
 			nav.classList.toggle( 'py-2', scrolled );
 			nav.classList.toggle( 'py-4', ! scrolled );
+
+			if ( heroOverlay ) {
+				const heroBottom = heroOverlay.getBoundingClientRect().bottom;
+				// Stay in overlay mode while the hero is still behind the nav.
+				nav.classList.toggle( 'tbc-nav-overlay', heroBottom > 64 );
+			}
 		};
 		window.addEventListener( 'scroll', onScroll, { passive: true } );
 		onScroll();

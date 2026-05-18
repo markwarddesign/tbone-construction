@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/partners-banner",
+    "version": "1.0.0",
+    "title": "Partners Banner",
+    "category": "tbone-construction",
+    "description": "Trusted-by strip — heading plus a row of partner logos pulled from the media library.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/partners-banner/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading":   { "type": "string",  "default": "Trusted By & Partnering With Local Experts" },
+        "grayscale": { "type": "boolean", "default": true },
+        "size":      { "type": "string",  "default": "small", "enum": [ "small", "medium", "large" ] },
+        "partners": {
+            "type": "array",
+            "default": [],
+            "items": {
+                "type": "object"
+            }
+        }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}
