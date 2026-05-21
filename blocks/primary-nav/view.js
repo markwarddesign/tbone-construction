@@ -44,7 +44,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			if ( heroOverlay ) {
 				const heroBottom = heroOverlay.getBoundingClientRect().bottom;
 				// Stay in overlay mode while the hero is still behind the nav.
-				nav.classList.toggle( 'tbc-nav-overlay', heroBottom > 64 );
+				const overlay = heroBottom > 64;
+				nav.classList.toggle( 'tbc-nav-overlay', overlay );
+				// Once scrolled while still over the hero, add the glassy dark variant.
+				nav.classList.toggle( 'tbc-nav-scrolled', overlay && scrolled );
+			} else {
+				nav.classList.remove( 'tbc-nav-scrolled' );
 			}
 		};
 		window.addEventListener( 'scroll', onScroll, { passive: true } );

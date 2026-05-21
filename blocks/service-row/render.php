@@ -12,8 +12,8 @@ $features     = array_values( array_filter( array_map( 'trim', explode( "\n", $f
 ?>
 <div class="tbc-service-row flex flex-col md:flex-row gap-8 lg:gap-16 items-start md:[&:nth-child(even)]:flex-row-reverse">
   <div class="md:w-1/2 space-y-6">
-    <div class="flex items-center space-x-4 mb-2">
-      <div class="p-3 bg-[#faf8f5] border border-stone-200 text-[#c25e24] shadow-sm">
+    <div class="space-y-4 mb-2">
+      <div class="inline-flex p-3 bg-[#faf8f5] border border-stone-200 text-[#c25e24] shadow-sm">
         <?php echo tw_icon( $icon, 'w-7 h-7' ); ?>
       </div>
       <h2 class="text-3xl lg:text-4xl font-serif text-stone-900"><?php echo $title; ?></h2>

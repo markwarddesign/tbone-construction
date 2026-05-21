@@ -6,6 +6,15 @@ $phone_link  = get_option( 'tbone_construction_topbar_phone_link', 'tel:55512345
 $email       = get_option( 'tbone_construction_topbar_email',      'hello@tboneconst.com' );
 $description = get_option( 'tbone_construction_footer_description', 'With over 25 years of hands-on experience, we help Idaho families upgrade their homes with durable outdoor living spaces, siding, windows, and practical renovations. Projects tailored specifically to your budget and lifestyle.' );
 
+$services = [
+    [ home_url( '/services/decks-railings' ),    'Decks & Railings' ],
+    [ home_url( '/services/canopies-covers' ),   'Canopies & Covers' ],
+    [ home_url( '/services/siding' ),            'Siding Installation' ],
+    [ home_url( '/services/windows' ),           'Window Replacements' ],
+    [ home_url( '/services/renovations' ),       'Home Renovations' ],
+    [ home_url( '/services/sheds-greenhouses' ), 'Sheds & Greenhouses' ],
+];
+
 $logo_id  = (int) get_option( 'tbone_construction_logo_id', 0 );
 $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
 
@@ -19,12 +28,11 @@ $nav = has_nav_menu( 'footer' ) ? wp_nav_menu( [
 
 if ( ! $nav ) {
     $items = [
-        [ home_url( '/' ),         'Home' ],
-        [ home_url( '/about' ),    'Our Story' ],
-        [ home_url( '/services' ), 'Services' ],
-        [ home_url( '/gallery' ),  'Gallery' ],
-        [ home_url( '/reviews' ),  'Reviews' ],
-        [ home_url( '/contact' ),  'Contact' ],
+        [ home_url( '/' ),        'Home' ],
+        [ home_url( '/about' ),   'Our Story' ],
+        [ home_url( '/gallery' ), 'Gallery' ],
+        [ home_url( '/reviews' ), 'Reviews' ],
+        [ home_url( '/contact' ), 'Contact' ],
     ];
     $links = '';
     foreach ( $items as [ $url, $label ] ) {
@@ -39,9 +47,9 @@ if ( ! $nav ) {
 ?>
 <footer class="bg-[#1f2926] border-t-8 border-[#c25e24] text-stone-400 pt-16 pb-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
 
-      <div class="col-span-1 md:col-span-2 pr-4 lg:pr-12">
+      <div class="col-span-1 md:col-span-2 lg:col-span-2 pr-4 lg:pr-12">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mb-6 inline-block group">
           <?php if ( $logo_url ) : ?>
             <img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="h-10 w-auto filter brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
@@ -65,6 +73,19 @@ if ( ! $nav ) {
       </div>
 
       <div class="col-span-1">
+        <h3 class="font-serif text-white text-xl mb-6">Services</h3>
+        <ul class="space-y-4 list-none m-0 p-0">
+          <?php foreach ( $services as [ $url, $label ] ) : ?>
+            <li class="list-none">
+              <a href="<?php echo esc_url( $url ); ?>" class="hover:text-white transition-colors font-medium">
+                <?php echo esc_html( $label ); ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+
+      <div class="col-span-1 lg:col-span-2">
         <h3 class="font-serif text-white text-xl mb-6">Connect</h3>
         <ul class="space-y-4 mb-8 list-none m-0 p-0">
           <li class="list-none">

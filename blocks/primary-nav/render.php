@@ -112,7 +112,7 @@ if ( ! $mobile_menu_html ) {
         <div class="px-4 pt-2">
             <?php echo $mobile_menu_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             <div class="pt-6 px-0">
-                <a href="<?php echo esc_url( $cta_url ); ?>" class="w-full inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">Get a Free Estimate</a>
+                <a href="<?php echo esc_url( $cta_url ); ?>" class="tbc-nav-cta w-full inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">Get a Free Estimate</a>
             </div>
         </div>
     </div>

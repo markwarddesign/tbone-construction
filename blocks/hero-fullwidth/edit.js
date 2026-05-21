@@ -61,7 +61,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center" style={ { minHeight: minHeight || '85vh' } }>
 					<div className="py-32 lg:py-40 max-w-3xl">
-						<div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mb-8 transform -rotate-1">
+						<div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mb-8 transform">
 							<Icon name="map-pin" className="w-4 h-4 text-[#c25e24]" />
 							<RichText tagName="span" className="text-sm font-bold uppercase tracking-widest text-white" value={ badge } onChange={ ( v ) => setAttributes( { badge: v } ) } />
 						</div>

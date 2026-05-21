@@ -24,7 +24,7 @@ $min_height     = esc_attr( $attributes['minHeight']        ?? '85vh' );
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center" style="min-height: <?php echo $min_height; ?>;">
         <div class="py-32 lg:py-40 max-w-3xl">
 
-            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mb-8 transform -rotate-1">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mb-8 transform">
                 <?php echo tw_icon( 'map-pin', 'w-4 h-4 text-[#c25e24]' ); ?>
                 <span class="text-sm font-bold uppercase tracking-widest text-white"><?php echo $badge; ?></span>
             </div>
