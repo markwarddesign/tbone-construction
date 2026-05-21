@@ -41,7 +41,7 @@ $form_markup = (string) ob_get_clean();
     <?php echo tbc_section_heading( $heading, $subheading ); ?>
 
     <div class="mt-12 bg-[#1f2926] text-white p-8 lg:p-10 shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
         <div class="flex items-start">
           <?php echo tw_icon( 'phone', 'w-6 h-6 text-[#c25e24] mr-4 shrink-0 mt-1' ); ?>
           <div class="min-w-0">
@@ -56,20 +56,21 @@ $form_markup = (string) ob_get_clean();
             <a href="mailto:<?php echo esc_attr( $email ); ?>" class="text-lg font-medium text-white hover:text-[#c25e24] break-words"><?php echo esc_html( $email ); ?></a>
           </div>
         </div>
-        <?php if ( $area_label || $area_text ) : ?>
-          <div class="flex items-start">
-            <?php echo tw_icon( 'map-pin', 'w-6 h-6 text-[#c25e24] mr-4 shrink-0 mt-1' ); ?>
-            <div class="min-w-0">
-              <?php if ( $area_label ) : ?>
-                <p class="text-xs font-bold tracking-widest uppercase text-stone-400 mb-1"><?php echo $area_label; ?></p>
-              <?php endif; ?>
-              <?php if ( $area_text ) : ?>
-                <p class="text-stone-200 leading-snug"><?php echo $area_text; ?></p>
-              <?php endif; ?>
-            </div>
-          </div>
-        <?php endif; ?>
       </div>
+
+      <?php if ( $area_label || $area_text ) : ?>
+        <div class="mt-8 pt-8 border-t border-white/10 flex items-start">
+          <?php echo tw_icon( 'map-pin', 'w-6 h-6 text-[#c25e24] mr-4 shrink-0 mt-1' ); ?>
+          <div class="min-w-0">
+            <?php if ( $area_label ) : ?>
+              <p class="text-xs font-bold tracking-widest uppercase text-stone-400 mb-2"><?php echo $area_label; ?></p>
+            <?php endif; ?>
+            <?php if ( $area_text ) : ?>
+              <p class="text-stone-200 leading-snug"><?php echo $area_text; ?></p>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endif; ?>
     </div>
 
     <div class="mt-8 bg-white border border-stone-200 shadow-xl p-8 lg:p-12 tbc-cf7-wrapper">
