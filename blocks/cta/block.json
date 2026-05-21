@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/cta",
+    "version": "1.0.0",
+    "title": "Call to Action",
+    "category": "tbone-construction",
+    "description": "Dark, centered call-to-action band with heading, body, and button.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/cta/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "heading": { "type": "string", "default": "Ready to start your project?" },
+        "body":    { "type": "string", "default": "Free, no-obligation consultation. We'll walk the space, listen to your goals, and give you a written estimate within a week." },
+        "text":    { "type": "string", "default": "Get a Free Estimate" },
+        "url":     { "type": "string", "default": "/contact" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

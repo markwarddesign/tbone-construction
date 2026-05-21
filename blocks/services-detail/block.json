@@ -5,17 +5,13 @@
     "version": "2.0.0",
     "title": "Services Detail",
     "category": "tbone-construction",
-    "description": "Alternating service rows with editable section heading and footer CTA band.",
+    "description": "Alternating service rows with editable section heading.",
     "textdomain": "tbone-construction",
     "editorScript": "file:../../build/services-detail/index.js",
     "render": "file:./render.php",
     "attributes": {
-        "heading":      { "type": "string", "default": "Detailed Capabilities" },
-        "subheading":   { "type": "string", "default": "Comprehensive exterior upgrades and renovations designed to stand the test of time." },
-        "ctaHeading":   { "type": "string", "default": "Ready to upgrade your home?" },
-        "ctaBody":      { "type": "string", "default": "Contact us for a free, no-obligation consultation. We are excited to discuss your project and tailor it specifically to your budget and lifestyle." },
-        "ctaText":      { "type": "string", "default": "Get a Free Consultation" },
-        "ctaUrl":       { "type": "string", "default": "/contact" }
+        "heading":    { "type": "string", "default": "Detailed Capabilities" },
+        "subheading": { "type": "string", "default": "Comprehensive exterior upgrades and renovations designed to stand the test of time." }
     },
     "supports": { "html": false, "align": [ "full" ] }
 }
