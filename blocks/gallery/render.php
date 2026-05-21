@@ -31,8 +31,8 @@ $cat_terms = get_terms( [ 'taxonomy' => 'tbc_project_category', 'hide_empty' => 
 $cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
 
 /** Render the filter + grid portion (shared by full-frontend + editor preview). */
-$render_body = static function () use ( $cat_terms, $projects ): void {
-    if ( $cat_terms ) : ?>
+$render_body = static function () use ( $cat_terms, $projects, $category_slug ): void {
+    if ( $cat_terms && ! $category_slug ) : ?>
       <div class="flex flex-wrap gap-3 mb-12 border-b border-stone-200 pb-6" data-tbc-gallery-filters>
         <button type="button" data-tbc-filter="" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-stone-900 text-white shadow-md">All</button>
         <?php foreach ( $cat_terms as $term ) : ?>
