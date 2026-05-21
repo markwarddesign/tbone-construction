@@ -16,7 +16,9 @@
         "description": { "type": "string", "default": "Long-form service description." },
         "features":    { "type": "string", "default": "Feature one\nFeature two\nFeature three" },
         "imageUrl":    { "type": "string", "default": "" },
-        "imageAlt":    { "type": "string", "default": "" }
+        "imageAlt":    { "type": "string", "default": "" },
+        "linkUrl":     { "type": "string", "default": "" },
+        "linkText":    { "type": "string", "default": "Learn more" }
     },
     "supports": { "html": false, "inserter": false, "reusable": false }
 }

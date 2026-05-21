@@ -6,6 +6,8 @@ $title       = wp_kses_post( $attributes['title']       ?? '' );
 $description = wp_kses_post( $attributes['description'] ?? '' );
 $image_url   = esc_url(      $attributes['imageUrl']    ?? '' );
 $image_alt   = esc_attr(     $attributes['imageAlt']    ?? '' );
+$link_url    = esc_url(      $attributes['linkUrl']     ?? '' );
+$link_text   = esc_html(     $attributes['linkText']    ?? 'Learn more' );
 
 $features_raw = (string) ( $attributes['features'] ?? '' );
 $features     = array_values( array_filter( array_map( 'trim', explode( "\n", $features_raw ) ) ) );
@@ -30,6 +32,13 @@ $features     = array_values( array_filter( array_map( 'trim', explode( "\n", $f
           </li>
         <?php endforeach; ?>
       </ul>
+    <?php endif; ?>
+
+    <?php if ( $link_url ) : ?>
+      <a href="<?php echo $link_url; ?>" class="inline-flex items-center gap-2 text-[#c25e24] font-bold uppercase tracking-widest text-sm hover:gap-3 transition-all duration-200">
+        <?php echo $link_text; ?>
+        <?php echo tw_icon( 'arrow-right', 'w-4 h-4' ); ?>
+      </a>
     <?php endif; ?>
   </div>
 

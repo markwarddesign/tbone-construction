@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n';
 import Icon, { ICON_OPTIONS } from '../_shared/icons';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { icon, title, description, features, imageUrl, imageAlt } = attributes;
+	const { icon, title, description, features, imageUrl, imageAlt, linkUrl, linkText } = attributes;
 	const blockProps = useBlockProps( { className: 'tbc-service-row flex flex-col md:flex-row gap-8 lg:gap-16 items-start' } );
 
 	const featureList = ( features || '' ).split( '\n' ).map( ( s ) => s.trim() ).filter( Boolean );
@@ -23,6 +23,17 @@ export default function Edit( { attributes, setAttributes } ) {
 						label={ __( 'Features (one per line)', 'tbone-construction' ) }
 						value={ features }
 						onChange={ ( v ) => setAttributes( { features: v } ) }
+					/>
+					<TextControl
+						label={ __( 'Link URL (optional)', 'tbone-construction' ) }
+						help={ __( 'If set, a "Learn more" link appears below the features.', 'tbone-construction' ) }
+						value={ linkUrl }
+						onChange={ ( v ) => setAttributes( { linkUrl: v } ) }
+					/>
+					<TextControl
+						label={ __( 'Link Text', 'tbone-construction' ) }
+						value={ linkText }
+						onChange={ ( v ) => setAttributes( { linkText: v } ) }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Image', 'tbone-construction' ) }>
@@ -81,6 +92,13 @@ export default function Edit( { attributes, setAttributes } ) {
 								</li>
 							) ) }
 						</ul>
+					) }
+
+					{ linkUrl && (
+						<span className="inline-flex items-center gap-2 text-[#c25e24] font-bold uppercase tracking-widest text-sm">
+							{ linkText || 'Learn more' }
+							<Icon name="arrow-right" className="w-4 h-4" />
+						</span>
 					) }
 				</div>
 
