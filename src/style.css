@@ -14,9 +14,31 @@ html, body {
 .wp-block-template-part > * + * { margin-top: 0; }
 .wp-site-blocks > * + * { margin-top: 0 !important; }
 
+/* Let the header template-part dissolve so the sticky nav inside it can
+   stick for the full page height (its containing block becomes
+   .wp-site-blocks rather than the short <header> wrapper). */
+body > .wp-site-blocks > header.wp-block-template-part {
+  display: contents;
+}
+
 /* Subtle entrance animation used by .animate-in fade-in */
 @keyframes tbc-fade-in { from { opacity: 0; } to { opacity: 1; } }
 .animate-in.fade-in { animation: tbc-fade-in 0.7s ease both; }
+
+/* Stretch a single link to cover the whole card without nesting <a>s. */
+.tbc-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.tbc-card-link:focus-visible {
+  outline: none;
+}
+.tbc-card-link:focus-visible::after {
+  outline: 2px solid #c25e24;
+  outline-offset: 2px;
+}
 
 /* Decorative blueprint dot grid background utility */
 .tbc-dot-grid {
@@ -37,11 +59,19 @@ html, body {
 }
 
 /* When the nav is sitting over the hero, swap to a glassy white look. */
-.tbc-nav.tbc-nav-overlay,
-.tbc-nav.tbc-nav-overlay.shadow-md {
+.tbc-nav.tbc-nav-overlay {
   background-color: transparent !important;
   border-color: transparent !important;
   box-shadow: none !important;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+}
+/* Once the user starts scrolling but is still over the hero, fade to a
+   semi-opaque dark glass so the white menu stays readable. */
+.tbc-nav.tbc-nav-overlay.tbc-nav-scrolled {
+  background-color: rgba(28, 25, 23, 0.55) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 .tbc-nav.tbc-nav-overlay a:not(.tbc-nav-cta) {
   color: #ffffff !important;
@@ -49,6 +79,20 @@ html, body {
 .tbc-nav.tbc-nav-overlay a:not(.tbc-nav-cta):hover {
   background-color: rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
+}
+/* Dropdown panel keeps its solid white bg + dark text even when nav is in overlay mode. */
+.tbc-nav.tbc-nav-overlay .tbc-submenu a,
+.tbc-nav.tbc-nav-overlay .tbc-submenu-deep a {
+  color: #44403c !important;
+}
+.tbc-nav.tbc-nav-overlay .tbc-submenu a:hover,
+.tbc-nav.tbc-nav-overlay .tbc-submenu-deep a:hover {
+  background-color: #f5f5f4 !important;
+  color: #1c1917 !important;
+}
+.tbc-nav.tbc-nav-overlay .tbc-submenu a.text-\[\#c25e24\],
+.tbc-nav.tbc-nav-overlay .tbc-submenu-deep a.text-\[\#c25e24\] {
+  color: #c25e24 !important;
 }
 .tbc-nav.tbc-nav-overlay .border-l {
   border-color: rgba(255, 255, 255, 0.3) !important;
@@ -64,6 +108,22 @@ html, body {
 }
 .tbc-nav.tbc-nav-overlay .text-\[\#c25e24\] {
   color: #ffffff !important;
+}
+
+/* Mobile menu panel has its own light background, so opt it out of the
+   overlay's white-text treatment. */
+.tbc-nav.tbc-nav-overlay #tbc-mobile-menu a:not(.tbc-nav-cta) {
+  color: #44403c !important;
+}
+.tbc-nav.tbc-nav-overlay #tbc-mobile-menu a:not(.tbc-nav-cta):hover {
+  background-color: #f5f5f4 !important;
+  color: #1c1917 !important;
+}
+.tbc-nav.tbc-nav-overlay #tbc-mobile-menu a.text-\[\#c25e24\] {
+  color: #c25e24 !important;
+}
+.tbc-nav.tbc-nav-overlay #tbc-mobile-menu [data-tbc-mobile-toggle] {
+  color: #78716c !important;
 }
 
 /* ============================================================

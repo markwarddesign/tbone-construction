@@ -20,7 +20,7 @@ $image2         = esc_url(  $attributes['image2Url']        ?? '' );
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
         <div class="lg:col-span-6 flex flex-col items-start text-left">
-          <div class="inline-flex items-center space-x-2 bg-white px-4 py-2 border border-stone-200 shadow-sm mb-8 transform -rotate-1">
+          <div class="inline-flex items-center space-x-2 bg-white px-4 py-2 border border-stone-200 shadow-sm mb-8 transform">
             <?php echo tw_icon( 'map-pin', 'w-4 h-4 text-[#c25e24]' ); ?>
             <span class="text-sm font-bold text-stone-700 uppercase tracking-widest"><?php echo $badge; ?></span>
           </div>

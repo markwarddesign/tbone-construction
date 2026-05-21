@@ -51,8 +51,8 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="md:w-1/2 space-y-6">
-					<div className="flex items-center space-x-4 mb-2">
-						<div className="p-3 bg-[#faf8f5] border border-stone-200 text-[#c25e24] shadow-sm">
+					<div className="space-y-4 mb-2">
+						<div className="inline-flex p-3 bg-[#faf8f5] border border-stone-200 text-[#c25e24] shadow-sm">
 							<Icon name={ icon } className="w-7 h-7" />
 						</div>
 						<RichText

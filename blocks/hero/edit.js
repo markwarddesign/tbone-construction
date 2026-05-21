@@ -38,7 +38,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						<div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
 							<div className="lg:col-span-6 flex flex-col items-start text-left">
-								<div className="inline-flex items-center space-x-2 bg-white px-4 py-2 border border-stone-200 shadow-sm mb-8 transform -rotate-1">
+								<div className="inline-flex items-center space-x-2 bg-white px-4 py-2 border border-stone-200 shadow-sm mb-8 transform">
 									<Icon name="map-pin" className="w-4 h-4 text-[#c25e24]" />
 									<RichText tagName="span" className="text-sm font-bold text-stone-700 uppercase tracking-widest" value={ badge } onChange={ ( v ) => setAttributes( { badge: v } ) } />
 								</div>
