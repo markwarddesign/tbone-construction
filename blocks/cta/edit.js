@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { heading, body, text, url } = attributes;
-	const blockProps = useBlockProps( { className: 'animate-in fade-in py-16' } );
+	const blockProps = useBlockProps( { className: 'animate-in fade-in bg-white py-2 pb-20' } );
 
 	return (
 		<>

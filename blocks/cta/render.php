@@ -6,7 +6,7 @@ $body    = esc_html( $attributes['body']    ?? '' );
 $text    = esc_html( $attributes['text']    ?? '' );
 $url     = esc_url(  $attributes['url']     ?? '/contact' );
 ?>
-<div class="animate-in fade-in py-16">
+<div class="animate-in fade-in bg-white py-2 pb-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-[#1f2926] text-white p-12 lg:p-16 text-center relative overflow-hidden shadow-xl">
       <div class="absolute inset-0 opacity-10 tbc-dot-grid"></div>
