@@ -1,5 +1,4 @@
-import { useBlockProps, useInnerBlocksProps, RichText, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl } from '@wordpress/components';
+import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import Icon from '../_shared/icons';
 
@@ -13,7 +12,7 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { heading, subheading, ctaHeading, ctaBody, ctaText, ctaUrl } = attributes;
+	const { heading, subheading } = attributes;
 	const blockProps = useBlockProps( { className: 'animate-in fade-in pt-16 pb-24 bg-white' } );
 
 	const innerBlocksProps = useInnerBlocksProps(
@@ -26,37 +25,20 @@ export default function Edit( { attributes, setAttributes } ) {
 	);
 
 	return (
-		<>
-			<InspectorControls>
-				<PanelBody title={ __( 'Footer CTA', 'tbone-construction' ) }>
-					<TextControl label="CTA Button Text" value={ ctaText } onChange={ ( v ) => setAttributes( { ctaText: v } ) } />
-					<TextControl label="CTA Button URL"  value={ ctaUrl }  onChange={ ( v ) => setAttributes( { ctaUrl: v } ) } />
-				</PanelBody>
-			</InspectorControls>
-
-			<div { ...blockProps }>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="mb-16">
-						<div className="flex items-center gap-3 mb-6">
-							<div className="w-12 h-0.5 bg-[#c25e24]" />
-							<Icon name="compass" className="w-5 h-5 text-[#c25e24]" />
-							<div className="w-12 h-0.5 bg-[#c25e24]" />
-						</div>
-						<RichText tagName="h2" className="text-4xl md:text-5xl font-serif text-stone-800 tracking-tight mb-6 leading-tight" value={ heading } onChange={ ( v ) => setAttributes( { heading: v } ) } placeholder={ __( 'Section heading…', 'tbone-construction' ) } />
-						<RichText tagName="p"  className="text-lg text-stone-600 max-w-2xl font-medium leading-relaxed" value={ subheading } onChange={ ( v ) => setAttributes( { subheading: v } ) } placeholder={ __( 'Section subheading…', 'tbone-construction' ) } />
+		<div { ...blockProps }>
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="mb-16">
+					<div className="flex items-center gap-3 mb-6">
+						<div className="w-12 h-0.5 bg-[#c25e24]" />
+						<Icon name="compass" className="w-5 h-5 text-[#c25e24]" />
+						<div className="w-12 h-0.5 bg-[#c25e24]" />
 					</div>
-
-					<div { ...innerBlocksProps } />
-
-					<div className="mt-24 bg-[#1f2926] text-white p-12 lg:p-16 text-center">
-						<RichText tagName="h3" className="text-3xl md:text-4xl font-serif mb-6" value={ ctaHeading } onChange={ ( v ) => setAttributes( { ctaHeading: v } ) } placeholder={ __( 'CTA heading…', 'tbone-construction' ) } />
-						<RichText tagName="p"  className="text-lg text-stone-300 mb-8 max-w-2xl mx-auto leading-relaxed" value={ ctaBody } onChange={ ( v ) => setAttributes( { ctaBody: v } ) } placeholder={ __( 'CTA body…', 'tbone-construction' ) } />
-						{ ctaText && (
-							<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">{ ctaText }</span>
-						) }
-					</div>
+					<RichText tagName="h2" className="text-4xl md:text-5xl font-serif text-stone-800 tracking-tight mb-6 leading-tight" value={ heading } onChange={ ( v ) => setAttributes( { heading: v } ) } placeholder={ __( 'Section heading…', 'tbone-construction' ) } />
+					<RichText tagName="p"  className="text-lg text-stone-600 max-w-2xl font-medium leading-relaxed" value={ subheading } onChange={ ( v ) => setAttributes( { subheading: v } ) } placeholder={ __( 'Section subheading…', 'tbone-construction' ) } />
 				</div>
+
+				<div { ...innerBlocksProps } />
 			</div>
-		</>
+		</div>
 	);
 }
