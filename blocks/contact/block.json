@@ -16,7 +16,7 @@
         "callLabel":      { "type": "string", "default": "Call Us" },
         "emailLabel":     { "type": "string", "default": "Email Us" },
         "areaLabel":      { "type": "string", "default": "Service Area" },
-        "areaText":       { "type": "string", "default": "Proudly serving families and upgrading homes across the Idaho region." },
+        "areaText":       { "type": "string", "default": "Twin Falls • Filer • Buhl • Jerome • Burley • Hailey" },
         "cf7FormId":      { "type": "number",  "default": 0 }
     },
     "supports": { "html": false, "align": [ "full" ] }
