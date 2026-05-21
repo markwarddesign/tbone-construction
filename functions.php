@@ -11,6 +11,7 @@ require_once TBONE_CONSTRUCTION_DIR . '/inc/nav-walker.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/post-types.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/setup.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/theme-settings.php';
+require_once TBONE_CONSTRUCTION_DIR . '/inc/seo-presets.php';
 
 // ---------------------------------------------------------------------------
 // Theme setup
