@@ -19,9 +19,17 @@ $trex_url     = esc_url(     $attributes['trexLinkUrl'] ?? '#' );
 <div class="animate-in fade-in pt-16 pb-24 bg-[#faf8f5] min-h-screen relative">
   <div class="absolute inset-0 opacity-30 tbc-dot-grid pointer-events-none"></div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <?php if ( $image_url ) : ?>
+      <div class="lg:hidden mb-8">
+        <div class="border-4 border-white shadow-2xl">
+          <img src="<?php echo $image_url; ?>" alt="<?php echo $image_alt; ?>" class="w-full h-auto object-cover" />
+        </div>
+      </div>
+    <?php endif; ?>
+
     <?php echo tbc_section_heading( $heading, $subheading ); ?>
 
-    <div class="grid lg:grid-cols-2 gap-16 items-center mt-12">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mt-12">
       <div class="space-y-8 text-lg text-stone-700 leading-relaxed">
         <p><?php echo $para1; ?></p>
         <p><?php echo $para2; ?></p>
@@ -42,14 +50,14 @@ $trex_url     = esc_url(     $attributes['trexLinkUrl'] ?? '#' );
         <?php endif; ?>
       </div>
 
-      <div class="relative">
+      <div class="relative lg:pb-16">
         <?php if ( $image_url ) : ?>
-          <div class="border-8 border-white shadow-2xl relative z-20 transform rotate-2">
+          <div class="hidden lg:block border-8 border-white shadow-2xl relative z-20 transform rotate-2">
             <img src="<?php echo $image_url; ?>" alt="<?php echo $image_alt; ?>" class="w-full h-auto object-cover" />
           </div>
         <?php endif; ?>
 
-        <div class="absolute -bottom-10 -left-10 bg-[#1f2926] text-white p-8 z-30 shadow-xl max-w-sm border border-stone-700">
+        <div class="mt-0 relative lg:absolute lg:-bottom-10 lg:-left-10 bg-[#1f2926] text-white p-6 sm:p-8 z-30 shadow-xl w-full lg:max-w-sm border border-stone-700">
           <div class="flex items-center space-x-3 mb-4">
             <?php echo tw_icon( 'award', 'w-8 h-8 text-[#eab308]' ); ?>
             <h3 class="text-xl font-serif text-[#eab308]"><?php echo $trex_title; ?></h3>
