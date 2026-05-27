@@ -17,6 +17,20 @@ function tbone_construction_register_settings(): void {
     // Logo
     register_setting( 'tbone_construction_settings', 'tbone_construction_logo_id', [ 'sanitize_callback' => 'absint' ] );
 
+    // Favicon (used for browser tab + WP site icon)
+    register_setting( 'tbone_construction_settings', 'tbone_construction_favicon_id', [
+        'sanitize_callback' => static function ( $v ) {
+            $id = absint( $v );
+            // Mirror into WP's native site_icon option so admin/login pick it up too.
+            if ( $id ) {
+                update_option( 'site_icon', $id );
+            } elseif ( (int) get_option( 'site_icon' ) === (int) get_option( 'tbone_construction_favicon_id' ) ) {
+                delete_option( 'site_icon' );
+            }
+            return $id;
+        },
+    ] );
+
     // Footer
     register_setting( 'tbone_construction_settings', 'tbone_construction_footer_description', [ 'sanitize_callback' => 'sanitize_textarea_field' ] );
 }
@@ -41,8 +55,10 @@ function tbone_construction_render_settings_page(): void {
         return;
     }
 
-    $logo_id  = (int) get_option( 'tbone_construction_logo_id', 0 );
-    $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+    $logo_id     = (int) get_option( 'tbone_construction_logo_id', 0 );
+    $logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+    $favicon_id  = (int) get_option( 'tbone_construction_favicon_id', 0 );
+    $favicon_url = $favicon_id ? wp_get_attachment_image_url( $favicon_id, 'thumbnail' ) : '';
     ?>
     <div class="wrap">
         <h1><?php esc_html_e( 'T-Bone Construction — Theme Settings', 'tbone-construction' ); ?></h1>
@@ -178,6 +194,25 @@ function tbone_construction_render_settings_page(): void {
             </table>
 
             <hr/>
+            <h2 class="title"><?php esc_html_e( 'Favicon', 'tbone-construction' ); ?></h2>
+            <p><?php esc_html_e( 'Shown in browser tabs and bookmarks. Square PNG, at least 512×512 recommended. Also applied as the WordPress site icon for the admin and login screen.', 'tbone-construction' ); ?></p>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'Favicon Image', 'tbone-construction' ); ?></th>
+                    <td>
+                        <input type="hidden" id="tbone_construction_favicon_id" name="tbone_construction_favicon_id" value="<?php echo esc_attr( (string) ( $favicon_id ?: '' ) ); ?>" />
+                        <div id="tw-favicon-preview" style="margin-bottom:12px;">
+                            <?php if ( $favicon_url ) : ?>
+                                <img src="<?php echo esc_url( $favicon_url ); ?>" style="width:64px;height:64px;object-fit:cover;border:1px solid #ddd;padding:4px;background:#fff;" alt="" />
+                            <?php endif; ?>
+                        </div>
+                        <button type="button" id="tw-favicon-upload" class="button button-secondary"><?php esc_html_e( 'Upload / Select Image', 'tbone-construction' ); ?></button>
+                        <button type="button" id="tw-favicon-remove" class="button" <?php echo $favicon_id ? '' : 'style="display:none;"'; ?>><?php esc_html_e( 'Remove', 'tbone-construction' ); ?></button>
+                    </td>
+                </tr>
+            </table>
+
+            <hr/>
             <h2 class="title"><?php esc_html_e( 'Footer', 'tbone-construction' ); ?></h2>
             <table class="form-table" role="presentation">
                 <tr>
@@ -211,6 +246,26 @@ function tbone_construction_render_settings_page(): void {
             e.preventDefault();
             $( '#tbone_construction_logo_id' ).val( '' );
             $( '#tw-logo-preview' ).html( '' );
+            $( this ).hide();
+        } );
+
+        var favFrame;
+        $( '#tw-favicon-upload' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            if ( favFrame ) { favFrame.open(); return; }
+            favFrame = wp.media( { title: 'Select Favicon Image', button: { text: 'Use as Favicon' }, multiple: false, library: { type: 'image' } } );
+            favFrame.on( 'select', function () {
+                var a = favFrame.state().get( 'selection' ).first().toJSON();
+                $( '#tbone_construction_favicon_id' ).val( a.id );
+                $( '#tw-favicon-preview' ).html( '<img src="' + a.url + '" style="width:64px;height:64px;object-fit:cover;border:1px solid #ddd;padding:4px;background:#fff;" alt="" />' );
+                $( '#tw-favicon-remove' ).show();
+            } );
+            favFrame.open();
+        } );
+        $( '#tw-favicon-remove' ).on( 'click', function ( e ) {
+            e.preventDefault();
+            $( '#tbone_construction_favicon_id' ).val( '' );
+            $( '#tw-favicon-preview' ).html( '' );
             $( this ).hide();
         } );
     } );
