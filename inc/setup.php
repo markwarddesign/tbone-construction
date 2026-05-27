@@ -29,7 +29,7 @@ function tbone_construction_seed_home(): string {
     $hero_attrs = wp_json_encode( [
         'badge'            => 'Built for Idaho Weather',
         'headingTop'       => "Crafting Idaho's",
-        'headingAccent'    => 'Outdoor Spaces.',
+        'headingAccent'    => 'Outdoor Spaces',
         'body'             => 'With over 25 years of hands-on experience, we help Idaho families create beautiful, functional homes — starting with outdoor living spaces, covered patios, decks and railings. Projects tailored to your budget and lifestyle.',
         'primaryCtaText'   => 'Discuss Your Project',
         'primaryCtaUrl'    => '/contact',

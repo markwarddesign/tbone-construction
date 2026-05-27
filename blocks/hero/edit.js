@@ -1,10 +1,15 @@
 import { useBlockProps, RichText, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, TextControl, Button } from '@wordpress/components';
+import { PanelBody, TextControl, Button, RadioControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import Icon from '../_shared/icons';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { badge, headingTop, headingAccent, body, primaryCtaText, primaryCtaUrl, secondaryCtaText, secondaryCtaUrl, image1Url, image2Url } = attributes;
+	const imageCount = image2Url ? '2' : '1';
+	const setImageCount = ( v ) => {
+		if ( v === '1' ) setAttributes( { image2Url: '' } );
+	};
+	const showImg2 = imageCount === '2';
 	const blockProps = useBlockProps( { className: 'animate-in fade-in bg-[#faf8f5]' } );
 
 	return (
@@ -17,16 +22,40 @@ export default function Edit( { attributes, setAttributes } ) {
 					<TextControl label="Secondary CTA URL"  value={ secondaryCtaUrl }  onChange={ ( v ) => setAttributes( { secondaryCtaUrl: v } ) } />
 				</PanelBody>
 				<PanelBody title={ __( 'Images', 'tbone-construction' ) }>
+					<RadioControl
+						label={ __( 'Layout', 'tbone-construction' ) }
+						help={ __( 'Single shows one larger image. Two displays the stacked/overlapping pair.', 'tbone-construction' ) }
+						selected={ imageCount }
+						options={ [
+							{ label: __( 'Single image (larger)', 'tbone-construction' ), value: '1' },
+							{ label: __( 'Two images (stacked)', 'tbone-construction' ), value: '2' },
+						] }
+						onChange={ setImageCount }
+					/>
 					<MediaUploadCheck>
 						<MediaUpload allowedTypes={ [ 'image' ] } onSelect={ ( m ) => setAttributes( { image1Url: m?.url || '' } ) } render={ ( { open } ) => (
-							<Button onClick={ open } variant="secondary" style={ { width: '100%', marginBottom: 8 } }>{ image1Url ? __( 'Replace Image 1', 'tbone-construction' ) : __( 'Select Image 1', 'tbone-construction' ) }</Button>
+							<Button onClick={ open } variant="secondary" style={ { width: '100%', marginBottom: 8 } }>{ image1Url ? __( 'Replace Image', 'tbone-construction' ) : __( 'Select Image', 'tbone-construction' ) }</Button>
 						) } />
 					</MediaUploadCheck>
-					<MediaUploadCheck>
-						<MediaUpload allowedTypes={ [ 'image' ] } onSelect={ ( m ) => setAttributes( { image2Url: m?.url || '' } ) } render={ ( { open } ) => (
-							<Button onClick={ open } variant="secondary" style={ { width: '100%' } }>{ image2Url ? __( 'Replace Image 2', 'tbone-construction' ) : __( 'Select Image 2', 'tbone-construction' ) }</Button>
-						) } />
-					</MediaUploadCheck>
+					{ image1Url && (
+						<Button isDestructive variant="link" onClick={ () => setAttributes( { image1Url: '' } ) } style={ { marginBottom: 12 } }>
+							{ __( 'Remove image', 'tbone-construction' ) }
+						</Button>
+					) }
+					{ showImg2 && (
+						<>
+							<MediaUploadCheck>
+								<MediaUpload allowedTypes={ [ 'image' ] } onSelect={ ( m ) => setAttributes( { image2Url: m?.url || '' } ) } render={ ( { open } ) => (
+									<Button onClick={ open } variant="secondary" style={ { width: '100%' } }>{ image2Url ? __( 'Replace Image 2', 'tbone-construction' ) : __( 'Select Image 2', 'tbone-construction' ) }</Button>
+								) } />
+							</MediaUploadCheck>
+							{ image2Url && (
+								<Button isDestructive variant="link" onClick={ () => setAttributes( { image2Url: '' } ) }>
+									{ __( 'Remove image 2', 'tbone-construction' ) }
+								</Button>
+							) }
+						</>
+					) }
 				</PanelBody>
 			</InspectorControls>
 
@@ -57,19 +86,26 @@ export default function Edit( { attributes, setAttributes } ) {
 							</div>
 
 							<div className="lg:col-span-6 relative h-[500px] hidden md:block">
-								{ image1Url && (
-									<div className="absolute top-0 right-0 w-3/4 h-3/4 border-8 border-white shadow-xl transform rotate-3 z-10">
-										<img src={ image1Url } alt="" className="w-full h-full object-cover" />
-									</div>
-								) }
-								{ image2Url && (
-									<div className="absolute bottom-0 left-0 w-2/3 h-2/3 border-8 border-white shadow-lg transform -rotate-3 z-20">
-										<img src={ image2Url } alt="" className="w-full h-full object-cover" />
+								{ image1Url && image2Url ? (
+									<>
+										<div className="absolute top-0 right-0 w-3/4 h-3/4 border-8 border-white shadow-xl transform rotate-3 z-10">
+											<img src={ image1Url } alt="" className="w-full h-full object-cover" />
+										</div>
+										<div className="absolute bottom-0 left-0 w-2/3 h-2/3 border-8 border-white shadow-lg transform -rotate-3 z-20">
+											<img src={ image2Url } alt="" className="w-full h-full object-cover" />
+											<div className="absolute -bottom-4 -right-4 bg-[#c25e24] text-white p-3 shadow-md transform rotate-6">
+												<Icon name="hard-hat" className="w-6 h-6" />
+											</div>
+										</div>
+									</>
+								) : ( image1Url || image2Url ) ? (
+									<div className="absolute inset-0 border-8 border-white shadow-xl">
+										<img src={ image1Url || image2Url } alt="" className="w-full h-full object-cover" />
 										<div className="absolute -bottom-4 -right-4 bg-[#c25e24] text-white p-3 shadow-md transform rotate-6">
 											<Icon name="hard-hat" className="w-6 h-6" />
 										</div>
 									</div>
-								) }
+								) : null }
 							</div>
 
 						</div>

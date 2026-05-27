@@ -12,7 +12,7 @@
     "render": "file:./render.php",
     "attributes": {
         "heading":    { "type": "string", "default": "Project Gallery" },
-        "subheading": { "type": "string", "default": "A collection of our recent craftsmanship. Select a category below to filter." },
+        "subheading": { "type": "string", "default": "" },
         "limit":      { "type": "number", "default": 12 },
         "categorySlug": { "type": "string", "default": "" },
         "preview":    { "type": "boolean", "default": false }

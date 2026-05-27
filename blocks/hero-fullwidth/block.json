@@ -12,7 +12,7 @@
     "attributes": {
         "badge":          { "type": "string", "default": "Built for Idaho Weather" },
         "headingTop":     { "type": "string", "default": "Crafting Idaho's" },
-        "headingAccent":  { "type": "string", "default": "Outdoor Spaces." },
+        "headingAccent":  { "type": "string", "default": "Outdoor Spaces" },
         "body":           { "type": "string", "default": "With over 25 years of hands-on experience, we help local families create beautiful, functional homes. From custom decks and covered patios to full exterior siding and renovations." },
         "primaryCtaText": { "type": "string", "default": "Discuss Your Project" },
         "primaryCtaUrl":  { "type": "string", "default": "/contact" },
@@ -21,6 +21,7 @@
         "imageUrl":       { "type": "string", "default": "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" },
         "imageId":        { "type": "number", "default": 0 },
         "minHeight":      { "type": "string", "default": "85vh" },
+        "overlayOpacity": { "type": "number", "default": 70 },
         "align":          { "type": "string", "default": "full" }
     },
     "supports": { "html": false, "align": [ "full" ] }

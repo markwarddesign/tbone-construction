@@ -10,7 +10,7 @@
     "editorScript": "file:../../build/reviews-grid/index.js",
     "render": "file:./render.php",
     "attributes": {
-        "heading":      { "type": "string", "default": "Word of Mouth" },
+        "heading":      { "type": "string", "default": "Reviews" },
         "subheading":   { "type": "string", "default": "Don't just take our word for it. Read what your Idaho neighbors have to say about working with Travis and the team." },
         "averageScore": { "type": "string", "default": "4.9 / 5.0" },
         "averageLabel": { "type": "string", "default": "Average Local Rating" }
