@@ -65,7 +65,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				${ main ? `<div class="tbc-lightbox__main"><img src="${ main }" alt="${ escapeHtml( data.title || '' ) }" /></div>` : '' }
 				${ hasContent ? `<div class="tbc-lightbox__content">${ data.content }</div>` : '' }
 				${ thumbnails.length ? `<div class="tbc-lightbox__thumbs">${ thumbnails.map( ( u ) => `<img src="${ u }" alt="" />` ).join( '' ) }</div>` : '' }
-				${ ( hasContent || hasExtra ) && data.permalink
+				${ hasExtra && data.permalink
 					? `<a class="tbc-lightbox__view" href="${ data.permalink }">View full project →</a>`
 					: '' }
 			`;

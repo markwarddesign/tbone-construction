@@ -3,7 +3,7 @@ declare( strict_types=1 );
 
 $badge          = esc_html( $attributes['badge']            ?? 'Built for Idaho Weather' );
 $heading_top    = esc_html( $attributes['headingTop']       ?? "Crafting Idaho's" );
-$heading_accent = esc_html( $attributes['headingAccent']    ?? 'Outdoor Spaces.' );
+$heading_accent = esc_html( $attributes['headingAccent']    ?? 'Outdoor Spaces' );
 $body           = esc_html( $attributes['body']             ?? '' );
 $cta1_text      = esc_html( $attributes['primaryCtaText']   ?? 'Discuss Your Project' );
 $cta1_url       = esc_url(  $attributes['primaryCtaUrl']    ?? '/contact' );
@@ -53,15 +53,22 @@ $image2         = esc_url(  $attributes['image2Url']        ?? '' );
           </div>
         </div>
 
+        <?php $has_two = $image1 && $image2; ?>
         <div class="lg:col-span-6 relative h-[500px] hidden md:block">
-          <?php if ( $image1 ) : ?>
+          <?php if ( $has_two ) : ?>
             <div class="absolute top-0 right-0 w-3/4 h-3/4 border-8 border-white shadow-xl transform rotate-3 z-10 transition-transform hover:rotate-1 hover:z-30 duration-300">
               <img src="<?php echo $image1; ?>" alt="" class="w-full h-full object-cover" />
             </div>
-          <?php endif; ?>
-          <?php if ( $image2 ) : ?>
             <div class="absolute bottom-0 left-0 w-2/3 h-2/3 border-8 border-white shadow-lg transform -rotate-3 z-20 transition-transform hover:-rotate-1 hover:z-30 duration-300">
               <img src="<?php echo $image2; ?>" alt="" class="w-full h-full object-cover" />
+              <div class="absolute -bottom-4 -right-4 bg-[#c25e24] text-white p-3 shadow-md transform rotate-6">
+                <?php echo tw_icon( 'hard-hat', 'w-6 h-6' ); ?>
+              </div>
+            </div>
+          <?php elseif ( $image1 || $image2 ) : ?>
+            <?php $solo = $image1 ?: $image2; ?>
+            <div class="absolute inset-0 border-8 border-white shadow-xl">
+              <img src="<?php echo $solo; ?>" alt="" class="w-full h-full object-cover" />
               <div class="absolute -bottom-4 -right-4 bg-[#c25e24] text-white p-3 shadow-md transform rotate-6">
                 <?php echo tw_icon( 'hard-hat', 'w-6 h-6' ); ?>
               </div>

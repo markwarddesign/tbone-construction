@@ -1,7 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-$heading       = esc_html( $attributes['heading']      ?? 'Word of Mouth' );
+$heading       = esc_html( $attributes['heading']      ?? 'Reviews' );
 $subheading    = esc_html( $attributes['subheading']   ?? '' );
 $average_score = esc_html( $attributes['averageScore'] ?? '4.9 / 5.0' );
 $average_label = esc_html( $attributes['averageLabel'] ?? 'Average Local Rating' );

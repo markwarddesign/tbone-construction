@@ -1,5 +1,5 @@
 import { useBlockProps, RichText, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, TextControl, Button } from '@wordpress/components';
+import { PanelBody, TextControl, Button, RangeControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import Icon from '../_shared/icons';
 
@@ -15,7 +15,15 @@ export default function Edit( { attributes, setAttributes } ) {
 		secondaryCtaUrl,
 		imageUrl,
 		minHeight,
+		overlayOpacity = 70,
 	} = attributes;
+
+	const overlayTop = overlayOpacity / 100;
+	const overlayMid = ( overlayOpacity * 0.7 ) / 100;
+	const overlayBot = Math.min( 1, ( overlayOpacity * 1.15 ) / 100 );
+	const overlayStyle = overlayOpacity > 0
+		? { backgroundImage: `linear-gradient(to bottom, rgba(28,25,23,${overlayTop}), rgba(28,25,23,${overlayMid}), rgba(28,25,23,${overlayBot}))` }
+		: { display: 'none' };
 
 	const blockProps = useBlockProps( {
 		className: 'tbc-hero-overlay animate-in fade-in relative w-full overflow-hidden text-white',
@@ -43,6 +51,15 @@ export default function Edit( { attributes, setAttributes } ) {
 						value={ minHeight }
 						onChange={ ( v ) => setAttributes( { minHeight: v } ) }
 					/>
+					<RangeControl
+						label={ __( "Overlay Darkness (%)", "tbone-construction" ) }
+						help={ __( "Lower = brighter image. 0 removes the overlay entirely.", "tbone-construction" ) }
+						value={ overlayOpacity }
+						onChange={ ( v ) => setAttributes( { overlayOpacity: v ?? 0 } ) }
+						min={ 0 }
+						max={ 100 }
+						step={ 5 }
+					/>
 				</PanelBody>
 				<PanelBody title={ __( 'CTAs', 'tbone-construction' ) }>
 					<TextControl label="Primary CTA Text"   value={ primaryCtaText }   onChange={ ( v ) => setAttributes( { primaryCtaText: v } ) } />
@@ -56,12 +73,11 @@ export default function Edit( { attributes, setAttributes } ) {
 				{ imageUrl && (
 					<img src={ imageUrl } alt="" className="absolute inset-0 w-full h-full object-cover" />
 				) }
-				<div className="absolute inset-0 bg-gradient-to-b from-stone-900/70 via-stone-900/50 to-stone-900/80"></div>
-				<div className="absolute inset-0 opacity-20 tbc-dot-grid"></div>
+				<div className="absolute inset-0" style={ overlayStyle }></div>
 
 				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center" style={ { minHeight: minHeight || '85vh' } }>
 					<div className="py-32 lg:py-40 max-w-3xl">
-						<div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mb-8 transform">
+						<div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 border border-white/30 mt-12 mb-3 transform">
 							<Icon name="map-pin" className="w-4 h-4 text-[#c25e24]" />
 							<RichText tagName="span" className="text-sm font-bold uppercase tracking-widest text-white" value={ badge } onChange={ ( v ) => setAttributes( { badge: v } ) } />
 						</div>
