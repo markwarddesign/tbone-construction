@@ -58,17 +58,17 @@ $render_body = static function () use ( $cat_terms, $projects, $category_slug ):
           $has_more  = ( get_the_content() && strlen( wp_strip_all_tags( get_the_content() ) ) > 0 ) || count( $images ) > 1;
         ?>
           <a href="<?php the_permalink(); ?>"
-             class="tbc-gallery-item group relative bg-white p-4 pb-16 shadow-md border border-stone-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:z-10 block"
+             class="tbc-gallery-item group bg-white p-4 shadow-md border border-stone-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:z-10 flex flex-col"
              data-category="<?php echo esc_attr( $cat['slug'] ); ?>"
              data-project-id="<?php echo (int) $pid; ?>"
              data-has-detail="<?php echo $has_more ? '1' : '0'; ?>">
-            <div class="aspect-[4/3] overflow-hidden bg-stone-100 mb-4 border border-stone-100">
+            <div class="aspect-[4/3] overflow-hidden bg-stone-100 border border-stone-100">
               <?php if ( $thumb_url ) : ?>
                 <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <?php endif; ?>
             </div>
-            <div class="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center">
-              <h3 class="text-stone-900 font-serif text-lg"><?php the_title(); ?></h3>
+            <div class="mt-4 pt-2 flex flex-col items-center text-center flex-1">
+              <h3 class="text-stone-900 font-serif text-lg leading-snug break-words"><?php the_title(); ?></h3>
               <?php if ( $cat['name'] ) : ?>
                 <span class="text-[#c25e24] font-bold uppercase tracking-widest text-xs mt-1"><?php echo esc_html( $cat['name'] ); ?></span>
               <?php endif; ?>
@@ -78,9 +78,9 @@ $render_body = static function () use ( $cat_terms, $projects, $category_slug ):
           <script type="application/json" data-project-data="<?php echo (int) $pid; ?>"><?php
             echo wp_json_encode( [
                 'id'        => (int) $pid,
-                'title'     => get_the_title(),
+                'title'     => html_entity_decode( get_the_title(), ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
                 'permalink' => get_permalink(),
-                'category'  => $cat['name'],
+                'category'  => html_entity_decode( (string) $cat['name'], ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
                 'content'   => apply_filters( 'the_content', get_the_content() ),
                 'images'    => $images,
             ] );

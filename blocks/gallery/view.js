@@ -3,6 +3,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const filters = gallery.querySelectorAll( '[data-tbc-filter]' );
 		const items   = gallery.querySelectorAll( '.tbc-gallery-item' );
 		const lightbox      = gallery.querySelector( '[data-tbc-lightbox]' );
+		// Move lightbox to <body> so it escapes any ancestor stacking context
+		// (e.g. the gallery wrapper's animate-in transform) and overlays the sticky nav.
+		if ( lightbox && lightbox.parentNode !== document.body ) {
+			document.body.appendChild( lightbox );
+		}
 		const lightboxBody  = lightbox?.querySelector( '.tbc-lightbox__body' );
 		const lightboxClose = lightbox?.querySelectorAll( '[data-tbc-lightbox-close]' );
 
@@ -60,14 +65,24 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const thumbnails = ( data.images || [] ).slice( 1 );
 
 			lightboxBody.innerHTML = `
-				${ data.category ? `<span class="tbc-lightbox__cat">${ escapeHtml( data.category ) }</span>` : '' }
-				<h2 class="tbc-lightbox__title">${ escapeHtml( data.title || '' ) }</h2>
-				${ main ? `<div class="tbc-lightbox__main"><img src="${ main }" alt="${ escapeHtml( data.title || '' ) }" /></div>` : '' }
-				${ hasContent ? `<div class="tbc-lightbox__content">${ data.content }</div>` : '' }
-				${ thumbnails.length ? `<div class="tbc-lightbox__thumbs">${ thumbnails.map( ( u ) => `<img src="${ u }" alt="" />` ).join( '' ) }</div>` : '' }
-				${ hasExtra && data.permalink
-					? `<a class="tbc-lightbox__view" href="${ data.permalink }">View full project →</a>`
-					: '' }
+				<div class="tbc-lightbox__header">
+					${ data.category ? `<span class="tbc-lightbox__cat">${ escapeHtml( data.category ) }</span>` : '' }
+					<h2 class="tbc-lightbox__title">${ escapeHtml( data.title || '' ) }</h2>
+				</div>
+				<div class="tbc-lightbox__scroll">
+					<div class="tbc-lightbox__grid${ hasContent ? '' : ' tbc-lightbox__grid--single' }">
+						<div class="tbc-lightbox__media">
+							${ main ? `<div class="tbc-lightbox__main"><img src="${ main }" alt="${ escapeHtml( data.title || '' ) }" /></div>` : '' }
+							${ thumbnails.length ? `<div class="tbc-lightbox__thumbs">${ thumbnails.map( ( u ) => `<img src="${ u }" alt="" />` ).join( '' ) }</div>` : '' }
+						</div>
+						<div class="tbc-lightbox__info">
+							${ hasContent ? `<div class="tbc-lightbox__content">${ data.content }</div>` : '' }
+							${ hasExtra && data.permalink
+								? `<a class="tbc-lightbox__view" href="${ data.permalink }">View full project →</a>`
+								: '' }
+						</div>
+					</div>
+				</div>
 			`;
 
 			lightbox.classList.remove( 'hidden' );
