@@ -14,6 +14,13 @@ function tbone_construction_register_settings(): void {
     register_setting( 'tbone_construction_settings', 'tbone_construction_topbar_phone_link', [ 'sanitize_callback' => 'esc_url_raw' ] );
     register_setting( 'tbone_construction_settings', 'tbone_construction_topbar_email',      [ 'sanitize_callback' => 'sanitize_email' ] );
 
+    // Business address (NAP) — used in the footer and LocalBusiness schema.
+    register_setting( 'tbone_construction_settings', 'tbone_construction_address_street', [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    register_setting( 'tbone_construction_settings', 'tbone_construction_address_city',   [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    register_setting( 'tbone_construction_settings', 'tbone_construction_address_state',  [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    register_setting( 'tbone_construction_settings', 'tbone_construction_address_zip',    [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    register_setting( 'tbone_construction_settings', 'tbone_construction_hours',          [ 'sanitize_callback' => 'sanitize_text_field' ] );
+
     // Logo
     register_setting( 'tbone_construction_settings', 'tbone_construction_logo_id', [ 'sanitize_callback' => 'absint' ] );
 
@@ -103,6 +110,16 @@ function tbone_construction_render_settings_page(): void {
             </div>
         <?php endif; ?>
 
+        <?php if ( isset( $_GET['tbone-areas-done'] ) ) :
+            $areas = (int) $_GET['tbone-areas-done'];
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php echo esc_html( $areas > 0
+                    ? sprintf( _n( '%d area page created.', '%d area pages created.', $areas, 'tbone-construction' ), $areas )
+                    : __( 'All area pages already existed — nothing to create.', 'tbone-construction' ) ); ?></p>
+            </div>
+        <?php endif; ?>
+
         <hr/>
         <h2 class="title"><?php esc_html_e( 'Site Pages', 'tbone-construction' ); ?></h2>
         <p><?php esc_html_e( 'Creates the main pages (Home, Our Story, Services, Gallery, Reviews, Contact) and the six service sub-pages (decks, canopies, siding, windows, renovations, sheds). Safe to re-run — existing pages are not touched.', 'tbone-construction' ); ?></p>
@@ -110,6 +127,15 @@ function tbone_construction_render_settings_page(): void {
             <?php wp_nonce_field( 'tbone_construction_reset_setup' ); ?>
             <input type="hidden" name="action" value="tbone_construction_reset_setup" />
             <button type="submit" class="button button-secondary"><?php esc_html_e( 'Create / Repair Site Pages', 'tbone-construction' ); ?></button>
+        </form>
+
+        <hr/>
+        <h2 class="title"><?php esc_html_e( 'Area Pages (Local SEO)', 'tbone-construction' ); ?></h2>
+        <p><?php esc_html_e( 'Creates the “Areas We Serve” page plus a landing page for each Magic Valley city (Twin Falls, Filer, Buhl, Jerome, Burley, Hailey) and nests them in the Primary menu. Safe to re-run — existing pages are not touched.', 'tbone-construction' ); ?></p>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin:0 12px 24px 0;">
+            <?php wp_nonce_field( 'tbone_construction_seed_areas' ); ?>
+            <input type="hidden" name="action" value="tbone_construction_seed_areas" />
+            <button type="submit" class="button button-secondary"><?php esc_html_e( 'Create / Repair Area Pages', 'tbone-construction' ); ?></button>
         </form>
 
         <p style="margin-top:16px;color:#a00;"><strong><?php esc_html_e( 'Destructive:', 'tbone-construction' ); ?></strong>
@@ -170,6 +196,39 @@ function tbone_construction_render_settings_page(): void {
                     <td>
                         <input type="email" id="tbone_construction_topbar_email" name="tbone_construction_topbar_email" class="regular-text"
                                value="<?php echo esc_attr( get_option( 'tbone_construction_topbar_email', 'hello@tboneconst.com' ) ); ?>" />
+                    </td>
+                </tr>
+            </table>
+
+            <hr/>
+            <h2 class="title"><?php esc_html_e( 'Business Address & Hours', 'tbone-construction' ); ?></h2>
+            <p><?php esc_html_e( 'Shown in the footer and used to build the LocalBusiness structured data (local SEO). Keep this consistent with your Google Business Profile.', 'tbone-construction' ); ?></p>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><label for="tbone_construction_address_street">Street</label></th>
+                    <td><input type="text" id="tbone_construction_address_street" name="tbone_construction_address_street" class="regular-text"
+                               value="<?php echo esc_attr( get_option( 'tbone_construction_address_street', '2325 Village St' ) ); ?>" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="tbone_construction_address_city">City</label></th>
+                    <td><input type="text" id="tbone_construction_address_city" name="tbone_construction_address_city" class="regular-text"
+                               value="<?php echo esc_attr( get_option( 'tbone_construction_address_city', 'Twin Falls' ) ); ?>" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="tbone_construction_address_state">State</label></th>
+                    <td><input type="text" id="tbone_construction_address_state" name="tbone_construction_address_state" class="small-text"
+                               value="<?php echo esc_attr( get_option( 'tbone_construction_address_state', 'ID' ) ); ?>" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="tbone_construction_address_zip">ZIP</label></th>
+                    <td><input type="text" id="tbone_construction_address_zip" name="tbone_construction_address_zip" class="small-text"
+                               value="<?php echo esc_attr( get_option( 'tbone_construction_address_zip', '83301' ) ); ?>" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="tbone_construction_hours">Hours</label></th>
+                    <td><input type="text" id="tbone_construction_hours" name="tbone_construction_hours" class="regular-text"
+                               value="<?php echo esc_attr( get_option( 'tbone_construction_hours', 'Mon–Fri 8 AM – 5 PM' ) ); ?>" />
+                        <p class="description"><?php esc_html_e( 'Display text only, e.g. “Mon–Fri 8 AM – 5 PM”.', 'tbone-construction' ); ?></p>
                     </td>
                 </tr>
             </table>

@@ -1,8 +1,8 @@
 <?php
 declare( strict_types=1 );
 
-$phone      = get_option( 'tbone_construction_topbar_phone',      '(555) 123-4567' );
-$phone_link = get_option( 'tbone_construction_topbar_phone_link', 'tel:5551234567' );
+$phone      = get_option( 'tbone_construction_topbar_phone',      '(208) 751-4303' );
+$phone_link = get_option( 'tbone_construction_topbar_phone_link', 'tel:+12087514303' );
 $email      = get_option( 'tbone_construction_topbar_email',      'hello@tboneconst.com' );
 $tagline    = get_option( 'tbone_construction_topbar_text',       'Locally Owned in Idaho' );
 ?>

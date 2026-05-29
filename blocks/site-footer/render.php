@@ -1,8 +1,8 @@
 <?php
 declare( strict_types=1 );
 
-$phone       = get_option( 'tbone_construction_topbar_phone',      '(555) 123-4567' );
-$phone_link  = get_option( 'tbone_construction_topbar_phone_link', 'tel:5551234567' );
+$phone       = get_option( 'tbone_construction_topbar_phone',      '(208) 751-4303' );
+$phone_link  = get_option( 'tbone_construction_topbar_phone_link', 'tel:+12087514303' );
 $email       = get_option( 'tbone_construction_topbar_email',      'hello@tboneconst.com' );
 $description = get_option( 'tbone_construction_footer_description', 'With over 25 years of hands-on experience, we help Idaho families upgrade their homes with durable outdoor living spaces, siding, windows, and practical renovations. Projects tailored specifically to your budget and lifestyle.' );
 
@@ -17,6 +17,16 @@ $services = [
 
 $logo_id  = (int) get_option( 'tbone_construction_logo_id', 0 );
 $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+
+$nap   = function_exists( 'tbc_business_nap' ) ? tbc_business_nap() : [];
+$hours = $nap['hours'] ?? '';
+$addr_line = '';
+if ( $nap ) {
+    $addr_line = trim( sprintf( '%s, %s, %s %s', $nap['street'], $nap['city'], $nap['state'], $nap['zip'] ), ', ' );
+}
+$map_url = $addr_line ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $addr_line ) : '';
+
+$areas = function_exists( 'tbc_areas' ) ? tbc_areas() : [];
 
 $nav = has_nav_menu( 'footer' ) ? wp_nav_menu( [
     'theme_location' => 'footer',
@@ -100,6 +110,20 @@ if ( ! $nav ) {
               <?php echo esc_html( $email ); ?>
             </a>
           </li>
+          <?php if ( $addr_line ) : ?>
+          <li class="list-none">
+            <a href="<?php echo esc_url( $map_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-start font-medium hover:text-white transition-colors not-italic">
+              <?php echo tw_icon( 'map-pin', 'w-5 h-5 mr-3 text-[#c25e24] shrink-0' ); ?>
+              <address class="not-italic"><?php echo esc_html( $addr_line ); ?></address>
+            </a>
+          </li>
+          <?php endif; ?>
+          <?php if ( $hours ) : ?>
+          <li class="list-none flex items-start font-medium">
+            <?php echo tw_icon( 'compass', 'w-5 h-5 mr-3 text-[#c25e24] shrink-0' ); ?>
+            <span><?php echo esc_html( $hours ); ?></span>
+          </li>
+          <?php endif; ?>
         </ul>
         <a href="https://www.trex.com" target="_blank" rel="noopener noreferrer" class="block w-full bg-[#faf8f5] p-4 group shadow-md transition-transform hover:-translate-y-1">
           <p class="text-xs font-bold uppercase tracking-widest text-stone-500 mb-1">Decking Materials</p>
@@ -110,6 +134,21 @@ if ( ! $nav ) {
         </a>
       </div>
     </div>
+
+    <?php if ( $areas ) : ?>
+    <div class="pt-8 border-t border-white/10 mb-8">
+      <h3 class="text-xs font-bold tracking-widest uppercase text-stone-400 mb-4">Areas We Serve</h3>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 list-none m-0 p-0 text-sm">
+        <?php foreach ( $areas as $slug => $area ) : ?>
+          <li class="list-none">
+            <a href="<?php echo esc_url( home_url( '/areas/' . $slug ) ); ?>" class="hover:text-white transition-colors font-medium">
+              <?php echo esc_html( $area['name'] ); ?>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <?php endif; ?>
 
     <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm font-medium text-stone-500 gap-4">
       <p>&copy; <?php echo (int) date( 'Y' ); ?> <?php bloginfo( 'name' ); ?>. All rights reserved.</p>

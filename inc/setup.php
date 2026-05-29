@@ -317,6 +317,158 @@ function tbone_construction_seed_contact(): string {
 }
 
 /**
+ * Seed the /areas parent page + one child page per Magic Valley city, each
+ * holding an area-landing block bound to that city's slug. Idempotent.
+ *
+ * Returns the parent page ID (0 on failure) so the caller can wire up the menu.
+ */
+function tbone_construction_seed_area_pages(): int {
+    if ( ! function_exists( 'tbc_areas' ) ) {
+        return 0;
+    }
+
+    // Parent /areas page.
+    $parent = get_page_by_path( 'areas', OBJECT, 'page' );
+    if ( $parent instanceof WP_Post ) {
+        $parent_id = (int) $parent->ID;
+    } else {
+        $parent_id = (int) wp_insert_post( [
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_title'   => 'Areas We Serve',
+            'post_name'    => 'areas',
+            'post_content' => tbone_construction_seed_areas_index(),
+        ] );
+    }
+    if ( $parent_id <= 0 ) {
+        return 0;
+    }
+
+    foreach ( tbc_areas() as $slug => $area ) {
+        $existing = get_posts( [
+            'post_type'      => 'page',
+            'name'           => $slug,
+            'post_parent'    => $parent_id,
+            'posts_per_page' => 1,
+            'fields'         => 'ids',
+            'post_status'    => 'any',
+        ] );
+        if ( $existing ) continue;
+
+        wp_insert_post( [
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_title'   => $area['name'],
+            'post_name'    => $slug,
+            'post_parent'  => $parent_id,
+            'post_content' => sprintf(
+                '<!-- wp:tbone-construction/area-landing {"areaSlug":"%s"} /-->',
+                esc_js( $slug )
+            ),
+        ] );
+    }
+
+    return $parent_id;
+}
+
+/** Content for the /areas index page — intro + a card link per city. */
+function tbone_construction_seed_areas_index(): string {
+    $cards = '';
+    foreach ( tbc_areas() as $slug => $area ) {
+        $cards .= sprintf(
+            '<!-- wp:paragraph --><p><a href="/areas/%1$s"><strong>%2$s</strong></a> — %3$s</p><!-- /wp:paragraph -->',
+            esc_attr( $slug ),
+            esc_html( $area['name'] ),
+            esc_html( $area['county'] )
+        );
+    }
+
+    return <<<HTML
+<!-- wp:group {"tagName":"section","className":"py-16 bg-[#faf8f5]"} -->
+<section class="wp-block-group py-16 bg-[#faf8f5]">
+<!-- wp:group {"className":"max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"} -->
+<div class="wp-block-group max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- wp:paragraph {"className":"text-[#c25e24] font-bold tracking-widest uppercase text-sm mb-2"} -->
+<p class="text-[#c25e24] font-bold tracking-widest uppercase text-sm mb-2">Areas We Serve</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":1,"className":"text-5xl md:text-6xl font-serif text-stone-900 leading-tight mb-8"} -->
+<h1 class="wp-block-heading text-5xl md:text-6xl font-serif text-stone-900 leading-tight mb-8">Serving the Magic Valley</h1>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"className":"text-xl text-stone-600 font-medium leading-relaxed mb-10"} -->
+<p class="text-xl text-stone-600 font-medium leading-relaxed mb-10">Based in Twin Falls, T-Bone Construction builds custom decks, siding, canopies, windows, and renovations for homeowners across the Magic Valley. Choose your city below.</p>
+<!-- /wp:paragraph -->
+{$cards}
+</div>
+<!-- /wp:group -->
+</section>
+<!-- /wp:group -->
+HTML;
+}
+
+/**
+ * Attach the /areas pages as a nested "Areas We Serve" group in the menu.
+ * Idempotent — skips pages already present.
+ */
+function tbone_construction_attach_area_submenu( int $menu_id, int $areas_page_id ): int {
+    if ( $areas_page_id <= 0 || ! function_exists( 'tbc_areas' ) ) {
+        return 0;
+    }
+
+    $items = wp_get_nav_menu_items( $menu_id ) ?: [];
+
+    // Find (or create) the top-level item pointing at the /areas page.
+    $parent_menu_item_id = 0;
+    foreach ( $items as $item ) {
+        if ( (int) $item->object_id === $areas_page_id && 'page' === $item->object ) {
+            $parent_menu_item_id = (int) $item->ID;
+            break;
+        }
+    }
+    if ( ! $parent_menu_item_id ) {
+        $parent_menu_item_id = (int) wp_update_nav_menu_item( $menu_id, 0, [
+            'menu-item-title'     => 'Areas We Serve',
+            'menu-item-object'    => 'page',
+            'menu-item-object-id' => $areas_page_id,
+            'menu-item-type'      => 'post_type',
+            'menu-item-status'    => 'publish',
+        ] );
+    }
+    if ( $parent_menu_item_id <= 0 ) {
+        return 0;
+    }
+
+    $present_object_ids = array_map( static fn( $i ) => (int) $i->object_id, $items );
+
+    $added = 0;
+    foreach ( tbc_areas() as $slug => $area ) {
+        $page = get_posts( [
+            'post_type'      => 'page',
+            'name'           => $slug,
+            'post_parent'    => $areas_page_id,
+            'posts_per_page' => 1,
+            'post_status'    => 'any',
+        ] );
+        if ( ! $page ) continue;
+
+        $page_id = (int) $page[0]->ID;
+        if ( in_array( $page_id, $present_object_ids, true ) ) continue;
+
+        $result = wp_update_nav_menu_item( $menu_id, 0, [
+            'menu-item-title'     => $area['name'],
+            'menu-item-object'    => 'page',
+            'menu-item-object-id' => $page_id,
+            'menu-item-parent-id' => $parent_menu_item_id,
+            'menu-item-type'      => 'post_type',
+            'menu-item-status'    => 'publish',
+        ] );
+        if ( ! is_wp_error( $result ) ) {
+            $added++;
+        }
+    }
+    return $added;
+}
+
+/**
  * Blueprint for the six service sub-pages (/services/{slug}).
  * Each gets its own permalink, hero, body, features list, and CTA.
  */
@@ -600,6 +752,12 @@ function tbone_construction_run_setup( bool $force = false, bool $overwrite_cont
         tbone_construction_attach_service_submenu( $menu->term_id, $services_id );
     }
 
+    // Seed /areas + per-city landing pages and nest them in the Primary menu.
+    $areas_id = tbone_construction_seed_area_pages();
+    if ( $menu instanceof WP_Term && $areas_id > 0 ) {
+        tbone_construction_attach_area_submenu( $menu->term_id, $areas_id );
+    }
+
     // Seed example Project posts (idempotent — short-circuits if any tbc_project exists).
     tbone_construction_seed_projects();
 
@@ -644,6 +802,63 @@ add_action( 'admin_post_tbone_construction_reset_setup', static function (): voi
         'page'             => 'tbone-construction-settings',
         'tbone-setup-done' => count( $result['created'] ),
         'tbone-subpages'   => count( $result['subpages'] ),
+    ], admin_url( 'themes.php' ) );
+
+    wp_safe_redirect( $url );
+    exit;
+} );
+
+/**
+ * Standalone runner for the /areas pages — seeds the parent + per-city pages
+ * and nests them in the Primary menu, without touching the main marketing
+ * pages or projects. Idempotent. Returns the number of city pages created.
+ */
+function tbone_construction_run_area_setup(): int {
+    if ( ! function_exists( 'tbc_areas' ) ) {
+        return 0;
+    }
+
+    // Count existing city child pages before seeding so we can report new ones.
+    $before = 0;
+    $parent = get_page_by_path( 'areas', OBJECT, 'page' );
+    if ( $parent instanceof WP_Post ) {
+        foreach ( tbc_areas() as $slug => $area ) {
+            if ( get_posts( [
+                'post_type'      => 'page',
+                'name'           => $slug,
+                'post_parent'    => $parent->ID,
+                'posts_per_page' => 1,
+                'fields'         => 'ids',
+                'post_status'    => 'any',
+            ] ) ) {
+                $before++;
+            }
+        }
+    }
+
+    $areas_id = tbone_construction_seed_area_pages();
+
+    $menu = wp_get_nav_menu_object( 'Primary' );
+    if ( $menu instanceof WP_Term && $areas_id > 0 ) {
+        tbone_construction_attach_area_submenu( $menu->term_id, $areas_id );
+    }
+
+    flush_rewrite_rules( false );
+
+    return max( 0, count( tbc_areas() ) - $before );
+}
+
+add_action( 'admin_post_tbone_construction_seed_areas', static function (): void {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'Forbidden', 403 );
+    }
+    check_admin_referer( 'tbone_construction_seed_areas' );
+
+    $created = tbone_construction_run_area_setup();
+
+    $url = add_query_arg( [
+        'page'              => 'tbone-construction-settings',
+        'tbone-areas-done'  => $created,
     ], admin_url( 'themes.php' ) );
 
     wp_safe_redirect( $url );
