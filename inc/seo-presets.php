@@ -41,11 +41,11 @@ function tbc_seo_brand_suffix(): string {
 function tbc_seo_presets(): array {
     $brand = tbc_seo_brand_suffix();
 
-    return [
+    $presets = [
         'home' => [
             'label'       => 'Home',
             'title'       => "Custom Decks, Siding & Renovations in Idaho | {$brand}",
-            'description' => "25+ years building custom decks, canopies, siding, windows, and renovations across the Treasure Valley. Licensed, insured, and TrexPro® certified. Get a free estimate.",
+            'description' => "25+ years building custom decks, canopies, siding, windows, and renovations across the Magic Valley. Licensed, insured, and TrexPro® certified. Get a free estimate.",
             'keyword'     => 'Idaho custom construction',
             'og_title'    => "Idaho's Trusted Builder for Decks, Siding & Renovations",
             'og_desc'     => 'Custom-built decks, canopies, siding, windows, and home renovations — crafted for Idaho weather. Free estimates, 25 years of experience.',
@@ -53,7 +53,7 @@ function tbc_seo_presets(): array {
         'about' => [
             'label'       => 'About',
             'title'       => "About Us — Family-Run Idaho Builders | {$brand}",
-            'description' => "Meet T-Bone Construction — a family-run Idaho contractor with 25+ years building decks, canopies, siding, and renovations across the Treasure Valley.",
+            'description' => "Meet T-Bone Construction — a family-run Idaho contractor with 25+ years building decks, canopies, siding, and renovations across the Magic Valley.",
             'keyword'     => 'Idaho construction company',
             'og_title'    => 'About T-Bone Construction — 25 Years of Idaho Craftsmanship',
             'og_desc'     => 'Family-run, TrexPro® certified, licensed and insured. We build for Idaho weather and the families that live in it.',
@@ -63,13 +63,13 @@ function tbc_seo_presets(): array {
             'title'       => "Our Services — Decks, Siding, Windows & More | {$brand}",
             'description' => "Explore every service we offer: custom decks & railings, canopies, siding, window replacements, home renovations, and shed builds — all done in-house.",
             'keyword'     => 'Idaho home improvement services',
-            'og_title'    => 'Construction Services in the Treasure Valley',
+            'og_title'    => 'Construction Services in the Magic Valley',
             'og_desc'     => 'Decks, canopies, siding, windows, renovations, and sheds — one local, in-house crew handles every project from start to finish.',
         ],
         'services/decks' => [
             'label'       => 'Decks & Railings',
             'title'       => "Custom Decks & Railings in Idaho — TrexPro® Certified | {$brand}",
-            'description' => "Premium composite decks built with Trex, TimberTech, and Eva-Last. Certified Trex RainEscape® installer serving the Treasure Valley. Free estimates.",
+            'description' => "Premium composite decks built with Trex, TimberTech, and Eva-Last. Certified Trex RainEscape® installer serving the Magic Valley. Free estimates.",
             'keyword'     => 'custom decks Idaho',
             'og_title'    => 'Composite Decks Built for Idaho Weather',
             'og_desc'     => 'TrexPro® certified deck installations with premium railings, custom layouts, and the area\'s only certified RainEscape® dry-deck system.',
@@ -85,7 +85,7 @@ function tbc_seo_presets(): array {
         'services/siding' => [
             'label'       => 'Siding Installation',
             'title'       => "Siding Installation in Idaho — Vinyl, LP, Metal | {$brand}",
-            'description' => "Full-service siding installation across the Treasure Valley. Vinyl, LP SmartSide®, and metal options — engineered to outlast Idaho weather. Free estimates.",
+            'description' => "Full-service siding installation across the Magic Valley. Vinyl, LP SmartSide®, and metal options — engineered to outlast Idaho weather. Free estimates.",
             'keyword'     => 'siding installation Idaho',
             'og_title'    => 'Siding Installation Built for Idaho Weather',
             'og_desc'     => 'New siding from a local crew that handles tear-off, inspection, and install. Vinyl, LP SmartSide®, and metal options.',
@@ -101,7 +101,7 @@ function tbc_seo_presets(): array {
         'services/renovations' => [
             'label'       => 'Home Renovations',
             'title'       => "Home Renovations & Remodels in Idaho | {$brand}",
-            'description' => "Kitchen remodels, bathroom updates, and full home refreshes across the Treasure Valley. One project lead, daily on-site, weekly written updates.",
+            'description' => "Kitchen remodels, bathroom updates, and full home refreshes across the Magic Valley. One project lead, daily on-site, weekly written updates.",
             'keyword'     => 'home renovations Idaho',
             'og_title'    => 'Kitchen, Bath, and Whole-Home Renovations',
             'og_desc'     => 'A clear, communicated renovation process from first walkthrough to final punch list. Idaho-based, family-run, fully insured.',
@@ -117,7 +117,7 @@ function tbc_seo_presets(): array {
         'reviews' => [
             'label'       => 'Reviews',
             'title'       => "Reviews — What Our Clients Say | {$brand}",
-            'description' => "Honest reviews from Treasure Valley homeowners. See what neighbors say about working with T-Bone Construction on decks, siding, and renovations.",
+            'description' => "Honest reviews from Magic Valley homeowners. See what neighbors say about working with T-Bone Construction on decks, siding, and renovations.",
             'keyword'     => 'T-Bone Construction reviews',
             'og_title'    => 'Client Reviews — T-Bone Construction',
             'og_desc'     => 'Real reviews from Idaho homeowners we\'ve worked with — see why neighbors recommend us.',
@@ -125,7 +125,7 @@ function tbc_seo_presets(): array {
         'gallery' => [
             'label'       => 'Gallery',
             'title'       => "Project Gallery — Idaho Decks, Siding, Renovations | {$brand}",
-            'description' => "Browse recent T-Bone Construction projects across the Treasure Valley. Custom decks, canopies, siding, windows, sheds, and full home renovations.",
+            'description' => "Browse recent T-Bone Construction projects across the Magic Valley. Custom decks, canopies, siding, windows, sheds, and full home renovations.",
             'keyword'     => 'construction project gallery Idaho',
             'og_title'    => 'Project Gallery — T-Bone Construction',
             'og_desc'     => 'A few of the recent decks, canopies, siding jobs, and renovations our crew has finished across Idaho.',
@@ -133,12 +133,30 @@ function tbc_seo_presets(): array {
         'contact' => [
             'label'       => 'Contact',
             'title'       => "Contact Us — Free Estimates in Idaho | {$brand}",
-            'description' => "Request a free estimate or ask a question. Call or message T-Bone Construction — local, family-run, and serving the Treasure Valley for 25+ years.",
+            'description' => "Request a free estimate or ask a question. Call or message T-Bone Construction — local, family-run, and serving the Magic Valley for 25+ years.",
             'keyword'     => 'Idaho contractor contact',
             'og_title'    => 'Contact T-Bone Construction',
-            'og_desc'     => 'Reach out for a free estimate on your next deck, canopy, siding, window, or renovation project. Serving the Treasure Valley.',
+            'og_desc'     => 'Reach out for a free estimate on your next deck, canopy, siding, window, or renovation project. Serving the Magic Valley.',
         ],
     ];
+
+    // Per-area landing pages (/areas/{city}) — generated from the shared
+    // service-area data so copy stays in sync with the area-landing block.
+    if ( function_exists( 'tbc_areas' ) ) {
+        foreach ( tbc_areas() as $slug => $area ) {
+            $city = $area['name'];
+            $presets[ "areas/{$slug}" ] = [
+                'label'       => "Area — {$city}",
+                'title'       => "Decks, Siding & Renovations in {$city}, ID | {$brand}",
+                'description' => "Custom decks, siding, canopies, windows, and renovations for {$city} homeowners. Local, family-run, TrexPro® certified. Free estimates across the Magic Valley.",
+                'keyword'     => strtolower( "{$city} Idaho contractor" ),
+                'og_title'    => "{$city}'s Local Deck & Renovation Builder",
+                'og_desc'     => "Serving {$city} and {$area['county']} with custom decks, siding, windows, and home renovations built for Idaho weather.",
+            ];
+        }
+    }
+
+    return $presets;
 }
 
 /**

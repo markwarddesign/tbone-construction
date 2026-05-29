@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/area-landing",
+    "version": "1.0.0",
+    "title": "Area Landing (Local SEO)",
+    "category": "tbone-construction",
+    "description": "Localized service-area landing section — bound to a Magic Valley city for local SEO.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/area-landing/index.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "areaSlug":   { "type": "string", "default": "twin-falls" },
+        "heading":    { "type": "string", "default": "" },
+        "intro":      { "type": "string", "default": "" },
+        "ctaText":    { "type": "string", "default": "Get a Free Estimate" },
+        "ctaUrl":     { "type": "string", "default": "/contact" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}
