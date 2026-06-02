@@ -370,11 +370,15 @@ body > .wp-site-blocks > header.wp-block-template-part {
 .tbc-gallery-grid > *:nth-child(4n+4) { transform: rotate(-2deg); }
 .tbc-gallery-grid > *:hover            { transform: translateY(-8px); z-index: 10; }
 
-/* Alternating service-row direction */
-.tbc-service-row:nth-child(even) {
+/* Service rows: image-first on mobile (every row), alternating sides on desktop.
+   DOM order is text → image, so column-reverse puts the image on top. */
+.tbc-service-row {
   flex-direction: column-reverse;
 }
 @media (min-width: 768px) {
+  .tbc-service-row {
+    flex-direction: row;
+  }
   .tbc-service-row:nth-child(even) {
     flex-direction: row-reverse;
   }

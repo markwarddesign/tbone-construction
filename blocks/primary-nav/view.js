@@ -30,6 +30,17 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	} );
 
+	// Keep the nav stuck directly below the sticky top bar (its height varies by
+	// breakpoint, so measure it rather than hard-coding an offset).
+	if ( nav ) {
+		const topbar = document.querySelector( '[data-tbc-topbar]' );
+		const setNavOffset = () => {
+			nav.style.top = ( topbar ? topbar.offsetHeight : 0 ) + 'px';
+		};
+		setNavOffset();
+		window.addEventListener( 'resize', setNavOffset, { passive: true } );
+	}
+
 	// Sticky-nav style on scroll
 	if ( nav ) {
 		const heroOverlay = document.querySelector( '.tbc-hero-overlay' );
