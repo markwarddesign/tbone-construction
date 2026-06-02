@@ -1,3 +1,5 @@
+import { slideshowMediaHTML, bindSlideshow, escapeHtml } from '../../src/lightbox';
+
 document.addEventListener( 'DOMContentLoaded', () => {
 	document.querySelectorAll( '[data-tbc-gallery]' ).forEach( ( gallery ) => {
 		const filters = gallery.querySelectorAll( '[data-tbc-filter]' );
@@ -50,30 +52,35 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			} );
 		} );
 
-		// Lightbox close
+		// Shared slideshow controller, bound once to the persistent lightbox body.
+		const slideshow = lightboxBody ? bindSlideshow( lightboxBody ) : null;
+
+		// Lightbox close + keyboard nav (Esc to close, arrows to slide).
 		lightboxClose?.forEach( ( el ) => el.addEventListener( 'click', closeLightbox ) );
 		document.addEventListener( 'keydown', ( e ) => {
-			if ( e.key === 'Escape' && lightbox && ! lightbox.classList.contains( 'hidden' ) ) closeLightbox();
+			if ( ! lightbox || lightbox.classList.contains( 'hidden' ) ) return;
+			if ( e.key === 'Escape' ) closeLightbox();
+			else if ( e.key === 'ArrowRight' ) slideshow?.next();
+			else if ( e.key === 'ArrowLeft' ) slideshow?.prev();
 		} );
 
 		function openLightbox( data ) {
 			if ( ! lightboxBody || ! lightbox ) return;
 			const hasContent = ( data.content && data.content.replace( /<[^>]+>/g, '' ).trim().length > 0 );
-			const hasExtra   = ( Array.isArray( data.images ) && data.images.length > 1 );
 
-			const main      = data.images?.[0] || '';
-			const thumbnails = ( data.images || [] ).slice( 1 );
+			const images  = Array.isArray( data.images ) ? data.images : [];
+			const hasExtra = images.length > 1;
+			const title    = escapeHtml( data.title || '' );
 
 			lightboxBody.innerHTML = `
 				<div class="tbc-lightbox__header">
 					${ data.category ? `<span class="tbc-lightbox__cat">${ escapeHtml( data.category ) }</span>` : '' }
-					<h2 class="tbc-lightbox__title">${ escapeHtml( data.title || '' ) }</h2>
+					<h2 class="tbc-lightbox__title">${ title }</h2>
 				</div>
 				<div class="tbc-lightbox__scroll">
 					<div class="tbc-lightbox__grid${ hasContent ? '' : ' tbc-lightbox__grid--single' }">
 						<div class="tbc-lightbox__media">
-							${ main ? `<div class="tbc-lightbox__main"><img src="${ main }" alt="${ escapeHtml( data.title || '' ) }" /></div>` : '' }
-							${ thumbnails.length ? `<div class="tbc-lightbox__thumbs">${ thumbnails.map( ( u ) => `<img src="${ u }" alt="" />` ).join( '' ) }</div>` : '' }
+							${ slideshowMediaHTML( images, data.title || '' ) }
 						</div>
 						<div class="tbc-lightbox__info">
 							${ hasContent ? `<div class="tbc-lightbox__content">${ data.content }</div>` : '' }
@@ -84,6 +91,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					</div>
 				</div>
 			`;
+
+			slideshow?.setImages( images, 0 );
 
 			lightbox.classList.remove( 'hidden' );
 			lightbox.setAttribute( 'aria-hidden', 'false' );
@@ -96,10 +105,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			lightbox.setAttribute( 'aria-hidden', 'true' );
 			if ( lightboxBody ) lightboxBody.innerHTML = '';
 			document.body.style.overflow = '';
-		}
-
-		function escapeHtml( s ) {
-			return String( s ).replace( /[&<>"']/g, ( c ) => ( { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ c ] ) );
 		}
 	} );
 } );

@@ -12,8 +12,8 @@ $preview       = ! empty( $attributes['preview'] );
 $query_args = [
     'post_type'      => 'tbc_project',
     'posts_per_page' => $limit > 0 ? $limit : -1,
-    'orderby'        => 'menu_order date',
-    'order'          => 'DESC',
+    // Manual drag order first (Projects → Order Projects), newest as tie-breaker.
+    'orderby'        => [ 'menu_order' => 'ASC', 'date' => 'DESC' ],
     'post_status'    => 'publish',
 ];
 if ( $category_slug ) {
@@ -27,8 +27,7 @@ if ( $category_slug ) {
 }
 $projects = new WP_Query( $query_args );
 
-$cat_terms = get_terms( [ 'taxonomy' => 'tbc_project_category', 'hide_empty' => true ] );
-$cat_terms = is_wp_error( $cat_terms ) ? [] : $cat_terms;
+$cat_terms = tbc_project_category_terms( true );
 
 /** Render the filter + grid portion (shared by full-frontend + editor preview). */
 $render_body = static function () use ( $cat_terms, $projects, $category_slug ): void {
