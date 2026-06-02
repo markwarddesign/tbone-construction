@@ -30,8 +30,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 	} );
 
-	// Keep the nav stuck directly below the sticky top bar (its height varies by
-	// breakpoint, so measure it rather than hard-coding an offset).
+	// Both the top bar and the nav are sticky. The nav must sit directly below
+	// the top bar, so we set its `top` to the bar's (breakpoint-dependent)
+	// height. The nav has no `top-0` utility class so this inline value owns it.
 	if ( nav ) {
 		const topbar = document.querySelector( '[data-tbc-topbar]' );
 		const setNavOffset = () => {
@@ -51,6 +52,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			nav.classList.toggle( 'backdrop-blur-sm', scrolled );
 			nav.classList.toggle( 'py-2', scrolled );
 			nav.classList.toggle( 'py-4', ! scrolled );
+			// Shrink the bar height on scroll (handled in CSS, mobile only).
+			nav.classList.toggle( 'tbc-nav-compact', scrolled );
 
 			if ( heroOverlay ) {
 				const heroBottom = heroOverlay.getBoundingClientRect().bottom;
