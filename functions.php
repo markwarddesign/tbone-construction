@@ -10,6 +10,7 @@ require_once TBONE_CONSTRUCTION_DIR . '/inc/data.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/areas.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/nav-walker.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/post-types.php';
+require_once TBONE_CONSTRUCTION_DIR . '/inc/project-order.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/setup.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/theme-settings.php';
 require_once TBONE_CONSTRUCTION_DIR . '/inc/seo-presets.php';
@@ -25,8 +26,9 @@ function tbone_construction_setup(): void {
     add_theme_support( 'menus' );
 
     register_nav_menus( [
-        'primary' => __( 'Primary Navigation', 'tbone-construction' ),
-        'footer'  => __( 'Footer Navigation', 'tbone-construction' ),
+        'primary'         => __( 'Primary Navigation', 'tbone-construction' ),
+        'footer'          => __( 'Footer Navigation', 'tbone-construction' ),
+        'footer_services' => __( 'Footer Services', 'tbone-construction' ),
     ] );
 }
 add_action( 'after_setup_theme', 'tbone_construction_setup' );

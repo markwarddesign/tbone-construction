@@ -34,7 +34,47 @@ add_action( 'init', static function (): void {
         'show_admin_column' => true,
         'rewrite'           => [ 'slug' => 'project-category' ],
     ] );
+
+    // Numeric "display order" stored per category term, exposed to the REST API.
+    register_term_meta( 'tbc_project_category', '_tbc_term_order', [
+        'type'         => 'integer',
+        'single'       => true,
+        'show_in_rest' => true,
+        'default'      => 0,
+        'auth_callback' => static function (): bool {
+            return current_user_can( 'manage_categories' );
+        },
+    ] );
 } );
+
+/**
+ * Project categories are flat (non-hierarchical) and projects are ordered with
+ * the drag-and-drop "Order Projects" admin page (see inc/project-order.php),
+ * which writes the `_tbc_term_order` term meta and each project's menu_order.
+ * The helpers below read that order for the front end.
+ *
+ * Project category terms ordered by the custom "Order" value, then name.
+ * Use this instead of a raw get_terms() call wherever the filter list is shown.
+ *
+ * @return WP_Term[]
+ */
+function tbc_project_category_terms( bool $hide_empty = true ): array {
+    $terms = get_terms( [
+        'taxonomy'   => 'tbc_project_category',
+        'hide_empty' => $hide_empty,
+    ] );
+    if ( is_wp_error( $terms ) ) {
+        return [];
+    }
+    // Sort in PHP so terms that have never had an order saved (meta row absent)
+    // still appear — they sort as 0, then fall back to name.
+    usort( $terms, static function ( WP_Term $a, WP_Term $b ): int {
+        $oa = (int) get_term_meta( $a->term_id, '_tbc_term_order', true );
+        $ob = (int) get_term_meta( $b->term_id, '_tbc_term_order', true );
+        return $oa <=> $ob ?: strcasecmp( $a->name, $b->name );
+    } );
+    return $terms;
+}
 
 /** Add a "Gallery Images" meta box for additional shots beyond the featured image. */
 add_action( 'add_meta_boxes', static function (): void {

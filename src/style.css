@@ -255,6 +255,11 @@ body > .wp-site-blocks > header.wp-block-template-part {
 .tbc-lightbox__media { min-width: 0; }
 .tbc-lightbox__info  { min-width: 0; }
 
+.tbc-lightbox__main {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
 .tbc-lightbox__main img {
   width: 100%;
   height: auto;
@@ -263,7 +268,39 @@ body > .wp-site-blocks > header.wp-block-template-part {
   background: #1f2926;
   border: 8px solid #fff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
+}
+
+.tbc-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(31, 41, 38, 0.6);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tbc-lightbox__nav:hover { background: #c25e24; }
+.tbc-lightbox__nav--prev { left: 1rem; }
+.tbc-lightbox__nav--next { right: 1rem; }
+
+.tbc-lightbox__counter {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(31, 41, 38, 0.7);
 }
 
 @media (min-width: 1024px) {
@@ -286,11 +323,27 @@ body > .wp-site-blocks > header.wp-block-template-part {
   margin-bottom: 0.5rem;
 }
 
-.tbc-lightbox__thumbs img {
+.tbc-lightbox__thumb {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #e7e5e4;
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.tbc-lightbox__thumb:hover { border-color: #c25e24; }
+
+.tbc-lightbox__thumb.is-active {
+  border-color: #c25e24;
+}
+
+.tbc-lightbox__thumb img {
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border: 1px solid #e7e5e4;
 }
 
 .tbc-lightbox__view {

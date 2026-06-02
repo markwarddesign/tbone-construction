@@ -54,6 +54,28 @@ if ( ! $nav ) {
     }
     $nav = '<ul class="space-y-4 list-none m-0 p-0">' . $links . '</ul>';
 }
+
+// Footer Services column: use the assigned "Footer Services" menu, else fall
+// back to the default service links above.
+$services_nav = has_nav_menu( 'footer_services' ) ? wp_nav_menu( [
+    'theme_location' => 'footer_services',
+    'container'      => false,
+    'echo'           => false,
+    'items_wrap'     => '<ul class="space-y-4 list-none m-0 p-0">%3$s</ul>',
+    'fallback_cb'    => false,
+] ) : '';
+
+if ( ! $services_nav ) {
+    $links = '';
+    foreach ( $services as [ $url, $label ] ) {
+        $links .= sprintf(
+            '<li class="list-none"><a href="%s" class="hover:text-white transition-colors font-medium">%s</a></li>',
+            esc_url( $url ),
+            esc_html( $label )
+        );
+    }
+    $services_nav = '<ul class="space-y-4 list-none m-0 p-0">' . $links . '</ul>';
+}
 ?>
 <footer class="bg-[#1f2926] border-t-8 border-[#c25e24] text-stone-400 pt-16 pb-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,15 +106,7 @@ if ( ! $nav ) {
 
       <div class="col-span-1">
         <h3 class="font-serif text-white text-xl mb-6">Services</h3>
-        <ul class="space-y-4 list-none m-0 p-0">
-          <?php foreach ( $services as [ $url, $label ] ) : ?>
-            <li class="list-none">
-              <a href="<?php echo esc_url( $url ); ?>" class="hover:text-white transition-colors font-medium">
-                <?php echo esc_html( $label ); ?>
-              </a>
-            </li>
-          <?php endforeach; ?>
-        </ul>
+        <?php echo $services_nav; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
       </div>
 
       <div class="col-span-1 lg:col-span-2">

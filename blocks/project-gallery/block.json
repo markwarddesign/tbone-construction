@@ -8,6 +8,7 @@
     "description": "Renders the _tbc_gallery_ids attached to a single tbc_project, skipping the featured image.",
     "textdomain": "tbone-construction",
     "render": "file:./render.php",
+    "viewScript": "file:../../build/project-gallery/view.js",
     "attributes": {},
     "supports": { "html": false, "inserter": false }
 }
