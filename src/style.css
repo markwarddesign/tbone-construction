@@ -58,6 +58,16 @@ body > .wp-site-blocks > header.wp-block-template-part {
   .wp-site-blocks .tbc-hero-overlay { margin-top: -80px; }
 }
 
+/* Smooth height changes when the nav shrinks on scroll. */
+.tbc-nav-row { transition: height 0.3s ease; }
+.tbc-nav-logo { transition: height 0.3s ease, transform 0.2s ease; }
+
+/* On mobile, shrink the nav bar (row + logo) once the user scrolls. */
+@media (max-width: 767px) {
+  .tbc-nav.tbc-nav-compact .tbc-nav-row { height: 3rem; }
+  .tbc-nav.tbc-nav-compact .tbc-nav-logo { height: 2rem; }
+}
+
 /* When the nav is sitting over the hero, swap to a glassy white look. */
 .tbc-nav.tbc-nav-overlay {
   background-color: transparent !important;

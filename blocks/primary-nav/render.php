@@ -75,13 +75,13 @@ if ( ! $mobile_menu_html ) {
     $mobile_menu_html = '<ul class="flex flex-col list-none m-0 p-0">' . $links . '</ul>';
 }
 ?>
-<nav class="tbc-nav sticky top-0 z-50 bg-[#faf8f5] py-4 border-b border-stone-200 transition-all duration-300" data-tbc-nav>
+<nav class="tbc-nav sticky z-50 bg-[#faf8f5] py-4 border-b border-stone-200 transition-all duration-300" data-tbc-nav>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="tbc-nav-row flex justify-between items-center h-16">
 
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center group" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
                 <?php if ( $logo_url ) : ?>
-                    <img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $logo_alt ?: get_bloginfo( 'name' ) ); ?>" class="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
+                    <img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $logo_alt ?: get_bloginfo( 'name' ) ); ?>" class="tbc-nav-logo h-10 w-auto object-contain transition-transform group-hover:scale-105" />
                 <?php else : ?>
                     <span class="inline-flex items-center">
                         <?php echo tw_icon( 'wrench', 'w-8 h-8 text-[#c25e24] mr-3' ); ?>
