@@ -104,6 +104,15 @@ function tbc_localbusiness_schema(): void {
         $schema['image'] = $logo;
     }
 
+    // sameAs — verified external profiles tying this site to the same entity
+    // (Google Business Profile, social pages, manufacturer installer listing).
+    if ( function_exists( 'tbc_social_profiles' ) ) {
+        $same_as = array_values( tbc_social_profiles() );
+        if ( $same_as ) {
+            $schema['sameAs'] = $same_as;
+        }
+    }
+
     echo "\n<script type=\"application/ld+json\">"
         . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
         . "</script>\n";

@@ -40,8 +40,47 @@ function tbone_construction_register_settings(): void {
 
     // Footer
     register_setting( 'tbone_construction_settings', 'tbone_construction_footer_description', [ 'sanitize_callback' => 'sanitize_textarea_field' ] );
+
+    // Social / external profiles — emitted as schema sameAs for entity SEO.
+    foreach ( array_keys( tbc_social_defaults() ) as $key ) {
+        register_setting( 'tbone_construction_settings', "tbone_construction_social_{$key}", [ 'sanitize_callback' => 'esc_url_raw' ] );
+    }
 }
 add_action( 'admin_init', 'tbone_construction_register_settings' );
+
+/**
+ * Known external profiles for the business, keyed by slug. The defaults ship
+ * with the live URLs; clear a field in Theme Settings to drop it. Each is
+ * emitted in the LocalBusiness schema's `sameAs` (see inc/schema.php) so Google
+ * can tie this site to the same real-world entity across the web.
+ *
+ * @return array<string,array{label:string,default:string}>
+ */
+function tbc_social_defaults(): array {
+    return [
+        'facebook' => [ 'label' => 'Facebook',           'default' => 'https://www.facebook.com/TboneconstructionLLC' ],
+        'linkedin' => [ 'label' => 'LinkedIn',           'default' => 'https://www.linkedin.com/in/traviswaldner' ],
+        'trex'     => [ 'label' => 'Trex RainEscape®',   'default' => 'https://trexrainescape.com/installers/travis-waldner/' ],
+        'gbp'      => [ 'label' => 'Google Business Profile', 'default' => 'https://share.google/25WDOwvSP4HYCzgNE' ],
+    ];
+}
+
+/**
+ * Resolved, non-empty profile URLs keyed by slug (option value, falling back to
+ * the shipped default). Shared by the schema output and the settings UI.
+ *
+ * @return array<string,string>
+ */
+function tbc_social_profiles(): array {
+    $out = [];
+    foreach ( tbc_social_defaults() as $key => $meta ) {
+        $url = trim( (string) get_option( "tbone_construction_social_{$key}", $meta['default'] ) );
+        if ( '' !== $url ) {
+            $out[ $key ] = $url;
+        }
+    }
+    return $out;
+}
 
 function tbone_construction_settings_menu(): void {
     $hook = add_theme_page(
@@ -231,6 +270,20 @@ function tbone_construction_render_settings_page(): void {
                         <p class="description"><?php esc_html_e( 'Display text only, e.g. “Mon–Fri 8 AM – 5 PM”.', 'tbone-construction' ); ?></p>
                     </td>
                 </tr>
+            </table>
+
+            <hr/>
+            <h2 class="title"><?php esc_html_e( 'Social & External Profiles', 'tbone-construction' ); ?></h2>
+            <p><?php esc_html_e( 'Verified profile URLs for this business. These are emitted in the LocalBusiness structured data (schema sameAs) so Google can confirm this site, your Google Business Profile, and your social pages are the same business. Leave a field blank to omit it.', 'tbone-construction' ); ?></p>
+            <table class="form-table" role="presentation">
+                <?php foreach ( tbc_social_defaults() as $key => $meta ) :
+                    $opt = "tbone_construction_social_{$key}"; ?>
+                    <tr>
+                        <th scope="row"><label for="<?php echo esc_attr( $opt ); ?>"><?php echo esc_html( $meta['label'] ); ?></label></th>
+                        <td><input type="url" id="<?php echo esc_attr( $opt ); ?>" name="<?php echo esc_attr( $opt ); ?>" class="regular-text" placeholder="https://…"
+                                   value="<?php echo esc_attr( get_option( $opt, $meta['default'] ) ); ?>" /></td>
+                    </tr>
+                <?php endforeach; ?>
             </table>
 
             <hr/>
