@@ -7,7 +7,7 @@ import Icon from '../_shared/icons';
 import metadata from './block.json';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { heading, subheading, limit, categorySlug } = attributes;
+	const { heading, subheading, description, limit, categorySlug } = attributes;
 	const blockProps = useBlockProps( { className: 'animate-in fade-in pt-16 pb-24 bg-[#faf8f5]' } );
 
 	const terms = useSelect(
@@ -57,6 +57,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						</div>
 						<RichText tagName="h2" className="text-4xl md:text-5xl font-serif text-stone-800 tracking-tight mb-6 leading-tight" value={ heading } onChange={ ( v ) => setAttributes( { heading: v } ) } />
 						<RichText tagName="p"  className="text-lg text-stone-600 max-w-2xl font-medium leading-relaxed" value={ subheading } onChange={ ( v ) => setAttributes( { subheading: v } ) } />
+						<RichText
+							tagName="p"
+							className="text-lg text-stone-600 max-w-3xl leading-relaxed mt-6"
+							value={ description }
+							onChange={ ( v ) => setAttributes( { description: v } ) }
+							placeholder={ __( 'Optional SEO description — a sentence or two introducing the gallery…', 'tbone-construction' ) }
+						/>
 					</div>
 
 					<ServerSideRender

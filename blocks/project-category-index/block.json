@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tbone-construction/project-category-index",
+    "version": "1.0.0",
+    "title": "Project Category Index (SEO)",
+    "category": "tbone-construction",
+    "description": "Content-rich index for a single project category — H1, intro copy, filtered project grid with lightbox, and internal cross-links. Auto-detects the queried category on the taxonomy archive.",
+    "textdomain": "tbone-construction",
+    "editorScript": "file:../../build/project-category-index/index.js",
+    "viewScript":   "file:../../build/gallery/view.js",
+    "render": "file:./render.php",
+    "attributes": {
+        "categorySlug": { "type": "string", "default": "" }
+    },
+    "supports": { "html": false, "align": [ "full" ] }
+}

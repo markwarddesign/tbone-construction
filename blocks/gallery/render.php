@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 $heading       = esc_html( $attributes['heading']      ?? 'Project Gallery' );
 $subheading    = esc_html( $attributes['subheading']   ?? '' );
+$description    = trim( (string) ( $attributes['description'] ?? '' ) );
 $limit         = (int)  ( $attributes['limit']         ?? 12 );
 $category_slug = sanitize_title( $attributes['categorySlug'] ?? '' );
 // When the editor invokes SSR it passes preview=1 so we render only the
@@ -33,11 +34,12 @@ $cat_terms = tbc_project_category_terms( true );
 $render_body = static function () use ( $cat_terms, $projects, $category_slug ): void {
     if ( $cat_terms && ! $category_slug ) : ?>
       <div class="flex flex-wrap gap-3 mb-12 border-b border-stone-200 pb-6" data-tbc-gallery-filters>
-        <button type="button" data-tbc-filter="" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-stone-900 text-white shadow-md">All</button>
-        <?php foreach ( $cat_terms as $term ) : ?>
-          <button type="button" data-tbc-filter="<?php echo esc_attr( $term->slug ); ?>" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-white text-stone-600 border border-stone-200 hover:border-stone-400 hover:text-stone-900">
+        <a href="<?php echo esc_url( home_url( '/gallery' ) ); ?>" data-tbc-filter="" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-stone-900 text-white shadow-md">All</a>
+        <?php foreach ( $cat_terms as $term ) :
+          $term_link = get_term_link( $term ); ?>
+          <a href="<?php echo esc_url( is_wp_error( $term_link ) ? '#' : $term_link ); ?>" data-tbc-filter="<?php echo esc_attr( $term->slug ); ?>" class="px-6 py-2 text-sm font-bold transition-all duration-200 bg-white text-stone-600 border border-stone-200 hover:border-stone-400 hover:text-stone-900">
             <?php echo esc_html( $term->name ); ?>
-          </button>
+          </a>
         <?php endforeach; ?>
       </div>
     <?php endif;
@@ -98,6 +100,9 @@ if ( $preview ) {
 <div class="animate-in fade-in pt-16 pb-24 bg-[#faf8f5] min-h-screen" data-tbc-gallery>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <?php echo tbc_section_heading( $heading, $subheading ); ?>
+    <?php if ( $description ) : ?>
+      <p class="max-w-3xl text-lg text-stone-600 leading-relaxed -mt-10 mb-16"><?php echo wp_kses_post( $description ); ?></p>
+    <?php endif; ?>
     <?php $render_body(); ?>
   </div>
 

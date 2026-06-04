@@ -109,3 +109,82 @@ function tbc_localbusiness_schema(): void {
         . "</script>\n";
 }
 add_action( 'wp_head', 'tbc_localbusiness_schema', 20 );
+
+/**
+ * BreadcrumbList + CollectionPage/ItemList JSON-LD for project-category archives
+ * (/project-category/{slug}). Gives the SEO index pages structured context and
+ * a crawlable item list of the category's projects.
+ */
+function tbc_project_category_schema(): void {
+    if ( ! function_exists( 'tbc_current_project_category' ) ) {
+        return;
+    }
+    $term = tbc_current_project_category();
+    if ( ! $term ) {
+        return;
+    }
+
+    $term_link = get_term_link( $term );
+    $term_url  = is_wp_error( $term_link ) ? home_url( '/' ) : $term_link;
+    $meta      = tbc_project_category_meta( $term );
+
+    $breadcrumb = [
+        '@context'        => 'https://schema.org',
+        '@type'           => 'BreadcrumbList',
+        'itemListElement' => [
+            [ '@type' => 'ListItem', 'position' => 1, 'name' => 'Home',     'item' => home_url( '/' ) ],
+            [ '@type' => 'ListItem', 'position' => 2, 'name' => 'Projects', 'item' => home_url( '/gallery' ) ],
+            [ '@type' => 'ListItem', 'position' => 3, 'name' => $term->name, 'item' => $term_url ],
+        ],
+    ];
+
+    $projects = new WP_Query( [
+        'post_type'      => 'tbc_project',
+        'posts_per_page' => -1,
+        'orderby'        => [ 'menu_order' => 'ASC', 'date' => 'DESC' ],
+        'post_status'    => 'publish',
+        'tax_query'      => [ [
+            'taxonomy' => 'tbc_project_category',
+            'field'    => 'slug',
+            'terms'    => $term->slug,
+        ] ],
+    ] );
+
+    $items = [];
+    $pos   = 0;
+    foreach ( $projects->posts as $post ) {
+        $pos++;
+        $images = function_exists( 'tbc_project_gallery_urls' ) ? tbc_project_gallery_urls( (int) $post->ID, 'large' ) : [];
+        $item   = [
+            '@type'    => 'ListItem',
+            'position' => $pos,
+            'url'      => get_permalink( $post ),
+            'name'     => get_the_title( $post ),
+        ];
+        if ( ! empty( $images[0] ) ) {
+            $item['image'] = $images[0];
+        }
+        $items[] = $item;
+    }
+    wp_reset_postdata();
+
+    $collection = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'CollectionPage',
+        'name'        => $meta['title'],
+        'description' => $meta['description'],
+        'url'         => $term_url,
+        'mainEntity'  => [
+            '@type'           => 'ItemList',
+            'numberOfItems'   => count( $items ),
+            'itemListElement' => $items,
+        ],
+    ];
+
+    foreach ( [ $breadcrumb, $collection ] as $block ) {
+        echo "\n<script type=\"application/ld+json\">"
+            . wp_json_encode( $block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+            . "</script>\n";
+    }
+}
+add_action( 'wp_head', 'tbc_project_category_schema', 20 );
