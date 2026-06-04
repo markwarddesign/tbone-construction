@@ -134,6 +134,36 @@ function tbc_project_category_meta( WP_Term $term ): array {
 }
 
 /**
+ * Auto-generated local-SEO sentence tying a category to the service area, e.g.
+ * "T-Bone Construction builds custom decks for homeowners across the Magic
+ * Valley — including Twin Falls, Filer, …". Returns '' if the area data is
+ * unavailable. Copy stays in sync with inc/areas.php (tbc_areas()).
+ */
+function tbc_project_category_areas_blurb( WP_Term $term ): string {
+    if ( ! function_exists( 'tbc_area_names' ) ) {
+        return '';
+    }
+    $names = array_values( tbc_area_names() );
+    if ( ! $names ) {
+        return '';
+    }
+
+    // Oxford-comma list: "A, B, and C" (or "A and B" / "A").
+    if ( count( $names ) > 2 ) {
+        $last = array_pop( $names );
+        $list = implode( ', ', $names ) . ', and ' . $last;
+    } else {
+        $list = implode( ' and ', $names );
+    }
+
+    return sprintf(
+        'T-Bone Construction builds custom %s for homeowners across the Magic Valley — including %s. Wherever you are in southern Idaho, the same local, family-run crew handles your project from the first walkthrough to the final punch list, with materials engineered for the area\'s weather.',
+        strtolower( $term->name ),
+        $list
+    );
+}
+
+/**
  * The project-category term for the current request, or null when we're not on
  * a tbc_project_category archive. Used by the index block and the schema output.
  */
