@@ -135,6 +135,23 @@ $other_terms = array_filter(
       </div>
     <?php endif; ?>
 
+    <?php
+    $areas_blurb = function_exists( 'tbc_project_category_areas_blurb' ) ? tbc_project_category_areas_blurb( $term ) : '';
+    $areas       = function_exists( 'tbc_areas' ) ? tbc_areas() : [];
+    if ( $areas_blurb && $areas ) : ?>
+      <div class="mt-16">
+        <h2 class="text-3xl font-serif text-stone-900 mb-4"><?php echo esc_html( $term->name ); ?> across the Magic Valley</h2>
+        <p class="text-lg text-stone-600 leading-relaxed max-w-3xl mb-6"><?php echo esc_html( $areas_blurb ); ?></p>
+        <div class="flex flex-wrap gap-3">
+          <?php foreach ( $areas as $area_slug => $area ) : ?>
+            <a href="<?php echo esc_url( home_url( '/areas/' . $area_slug ) ); ?>" class="px-5 py-2 text-sm font-bold bg-white text-stone-600 border border-stone-200 hover:border-[#c25e24] hover:text-stone-900 transition-colors">
+              <?php echo esc_html( $term->name ); ?> in <?php echo esc_html( $area['name'] ); ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+
     <div class="mt-16 bg-[#1f2926] text-white p-8 lg:p-10 shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       <div>
         <h2 class="font-serif text-2xl mb-1">Planning a <?php echo esc_html( rtrim( $term->name, 's' ) ); ?> project?</h2>
