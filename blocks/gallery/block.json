@@ -13,6 +13,7 @@
     "attributes": {
         "heading":    { "type": "string", "default": "Project Gallery" },
         "subheading": { "type": "string", "default": "" },
+        "description": { "type": "string", "default": "Explore a selection of completed projects from T-Bone Construction — custom decks, patio canopies, siding, window replacements, sheds, and full home renovations built for homeowners across Twin Falls and the wider Magic Valley. Every project is handled in-house by one local, family-run crew and engineered to stand up to Idaho's weather. Browse by category below, or open any project to see the materials, layout, and finished result." },
         "limit":      { "type": "number", "default": 12 },
         "categorySlug": { "type": "string", "default": "" },
         "preview":    { "type": "boolean", "default": false }

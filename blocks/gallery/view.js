@@ -18,7 +18,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		// Filter buttons
 		filters.forEach( ( btn ) => {
-			btn.addEventListener( 'click', () => {
+			btn.addEventListener( 'click', ( e ) => {
+				// Filters are real links to /project-category/{slug} for crawlers
+				// and no-JS; with JS we filter in place instead of navigating.
+				e.preventDefault();
 				const slug = btn.getAttribute( 'data-tbc-filter' );
 
 				filters.forEach( ( b ) => {
