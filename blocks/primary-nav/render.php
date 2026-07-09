@@ -75,7 +75,7 @@ if ( ! $mobile_menu_html ) {
     $mobile_menu_html = '<ul class="flex flex-col list-none m-0 p-0">' . $links . '</ul>';
 }
 ?>
-<nav class="tbc-nav sticky z-50 bg-[#faf8f5] !pt-0 border-b border-stone-200 transition-all duration-300" data-tbc-nav>
+<nav style="padding-top:0;" class="tbc-nav sticky z-50 bg-[#faf8f5] border-b border-stone-200 transition-all duration-300" data-tbc-nav>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="tbc-nav-row flex justify-between items-center h-16">
 
