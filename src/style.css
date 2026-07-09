@@ -10,6 +10,10 @@ html, body {
 
 ::selection { background: #c25e24; color: #fff; }
 
+/* Images shouldn't paint the rust ::selection highlight when a press-and-drag
+   (e.g. long-press on mobile) grabs them along with surrounding text. */
+img { -webkit-user-select: none; user-select: none; }
+
 /* Global resets — strip default WP block margins that introduce vertical gaps */
 .wp-block-template-part > * + * { margin-top: 0; }
 .wp-site-blocks > * + * { margin-top: 0 !important; }
