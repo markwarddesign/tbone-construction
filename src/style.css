@@ -11,8 +11,9 @@ html, body {
 ::selection { background: #c25e24; color: #fff; }
 
 /* Images shouldn't paint the rust ::selection highlight when a press-and-drag
-   (e.g. long-press on mobile) grabs them along with surrounding text. */
-img { -webkit-user-select: none; user-select: none; }
+   (e.g. long-press on mobile) grabs them along with surrounding text, and
+   shouldn't trigger iOS Safari's long-press "save image" callout highlight. */
+img { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 
 /* Global resets — strip default WP block margins that introduce vertical gaps */
 .wp-block-template-part > * + * { margin-top: 0; }
