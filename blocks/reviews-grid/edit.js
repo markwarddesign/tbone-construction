@@ -1,9 +1,80 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
+import { Button, Modal } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import Icon, { IconStarFill } from '../_shared/icons';
 
 const BLANK_REVIEW = { name: '', date: '', rating: 5, text: '' };
+
+/** Drag-and-drop list for quickly reordering reviews by name. */
+function ReorderModal( { reviews, onReorder, onClose } ) {
+	const [ dragIndex, setDragIndex ] = useState( null );
+	const [ overIndex, setOverIndex ] = useState( null );
+
+	const reset = () => {
+		setDragIndex( null );
+		setOverIndex( null );
+	};
+
+	const drop = ( target ) => {
+		if ( dragIndex === null || dragIndex === target ) {
+			reset();
+			return;
+		}
+		const next = [ ...reviews ];
+		const [ moved ] = next.splice( dragIndex, 1 );
+		next.splice( target, 0, moved );
+		onReorder( next );
+		reset();
+	};
+
+	return (
+		<Modal
+			title={ __( 'Reorder reviews', 'tbone-construction' ) }
+			onRequestClose={ onClose }
+			className="tbc-reorder-modal"
+		>
+			<p className="text-sm text-stone-500 mb-3">
+				{ __( 'Drag a review by its handle to change its order.', 'tbone-construction' ) }
+			</p>
+			<ul className="flex flex-col gap-1 m-0 p-0 list-none" style={ { maxHeight: '60vh', overflowY: 'auto' } }>
+				{ reviews.map( ( review, index ) => (
+					<li
+						key={ index }
+						draggable
+						onDragStart={ () => setDragIndex( index ) }
+						onDragOver={ ( e ) => {
+							e.preventDefault();
+							setOverIndex( index );
+						} }
+						onDrop={ () => drop( index ) }
+						onDragEnd={ reset }
+						className={ `flex items-center gap-3 px-3 py-2 border cursor-grab select-none bg-white ${
+							overIndex === index && dragIndex !== index
+								? 'border-[#c25e24] border-dashed'
+								: 'border-stone-200'
+						} ${ dragIndex === index ? 'opacity-40' : '' }` }
+					>
+						<Icon name="menu" className="w-4 h-4 text-stone-400 shrink-0" />
+						<span className="flex-1 truncate text-stone-800">
+							{ review.name?.trim() || __( '(Unnamed review)', 'tbone-construction' ) }
+						</span>
+						<span className="flex items-center text-[#c25e24] shrink-0">
+							{ Array.from( { length: Math.max( 0, Math.min( 5, review.rating || 0 ) ) } ).map( ( _, i ) => (
+								<IconStarFill key={ i } className="w-3 h-3" />
+							) ) }
+						</span>
+					</li>
+				) ) }
+			</ul>
+			<div className="flex justify-end mt-4">
+				<Button variant="primary" onClick={ onClose }>
+					{ __( 'Done', 'tbone-construction' ) }
+				</Button>
+			</div>
+		</Modal>
+	);
+}
 
 /** Clickable 1–5 star picker matching the frontend rating row. */
 function StarRating( { rating, onChange } ) {
@@ -96,6 +167,7 @@ function ReviewCard( { review, index, count, onChange, onRemove, onMove } ) {
 export default function Edit( { attributes, setAttributes } ) {
 	const { heading, subheading, averageScore, averageLabel, reviews } = attributes;
 	const blockProps = useBlockProps( { className: 'animate-in fade-in pt-16 pb-24 bg-white relative' } );
+	const [ isReordering, setIsReordering ] = useState( false );
 
 	const updateReview = ( index, patch ) =>
 		setAttributes( { reviews: reviews.map( ( r, i ) => ( i === index ? { ...r, ...patch } : r ) ) } );
@@ -134,6 +206,25 @@ export default function Edit( { attributes, setAttributes } ) {
 						<RichText tagName="span" className="text-xs font-bold text-stone-500 uppercase tracking-widest" value={ averageLabel } onChange={ ( v ) => setAttributes( { averageLabel: v } ) } />
 					</div>
 				</div>
+
+				<div className="flex justify-end mb-4">
+					<Button
+						variant="secondary"
+						icon="menu"
+						onClick={ () => setIsReordering( true ) }
+						disabled={ reviews.length < 2 }
+					>
+						{ __( 'Reorder', 'tbone-construction' ) }
+					</Button>
+				</div>
+
+				{ isReordering && (
+					<ReorderModal
+						reviews={ reviews }
+						onReorder={ ( next ) => setAttributes( { reviews: next } ) }
+						onClose={ () => setIsReordering( false ) }
+					/>
+				) }
 
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
 					{ reviews.map( ( review, index ) => (
