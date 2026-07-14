@@ -2,7 +2,7 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "tbone-construction/reviews-grid",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "title": "Reviews Grid",
     "category": "tbone-construction",
     "description": "Editable reviews grid with average-rating card.",
@@ -13,7 +13,22 @@
         "heading":      { "type": "string", "default": "Reviews" },
         "subheading":   { "type": "string", "default": "Don't just take our word for it. Read what your Idaho neighbors have to say about working with Travis and the team." },
         "averageScore": { "type": "string", "default": "4.9 / 5.0" },
-        "averageLabel": { "type": "string", "default": "Average Local Rating" }
+        "averageLabel": { "type": "string", "default": "Average Local Rating" },
+        "reviews": {
+            "type": "array",
+            "default": [
+                { "name": "Bart Schuerman",      "date": "10/10/2024", "rating": 5, "text": "This is my third Trex project with Travis. He is dependable efficient honest and does top quality work." },
+                { "name": "Trex Customer",       "date": "7/3/2024",   "rating": 5, "text": "Knowledge of installation was incredible. Travis explains the steps necessary and was accurate about how long the project would take." },
+                { "name": "Lu Ann Gergen",       "date": "1/17/2024",  "rating": 5, "text": "Professionalism, Quality" },
+                { "name": "Jose Rincon",         "date": "12/11/2023", "rating": 5, "text": "Travis came through. His work was great, he was very attentive and listened to all my concerns." },
+                { "name": "Karen Baldrige",      "date": "2/16/2023",  "rating": 5, "text": "Travis with T-Bone Construction is very professional, timely and priced very fairly." },
+                { "name": "Thomas Stears",       "date": "1/30/2023",  "rating": 5, "text": "Did good." },
+                { "name": "Home Depot Referral", "date": "5/26/2022",  "rating": 5, "text": "The fence is done well. It looks great and he put in a gate. It was completed in the time frame he stated (2 days)." },
+                { "name": "Robert Humphrey",     "date": "2/25/2022",  "rating": 5, "text": "He replied even before we got home from the store! He has been very congenial and has worked hard to accommodate our budget." },
+                { "name": "Rick Sandison, MD",   "date": "1/2/2022",   "rating": 5, "text": "Travis did a great job. He is a very friendly person. I thought the price of his work was fair." },
+                { "name": "Tangela Schuerman",   "date": "11/13/2021", "rating": 5, "text": "Great Work. His attention to detail is spot on. He is very thorough with his job and makes sure you are happy." }
+            ]
+        }
     },
     "supports": { "html": false, "align": [ "full" ] }
 }

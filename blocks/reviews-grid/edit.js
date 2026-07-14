@@ -1,32 +1,117 @@
-import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import Icon, { IconStarFill } from '../_shared/icons';
 
-const TEMPLATE = [
-	[ 'tbone-construction/review-card', { name: 'Bart Schuerman',      date: '10/10/2024', rating: 5, text: 'This is my third Trex project with Travis. He is dependable efficient honest and does top quality work.' } ],
-	[ 'tbone-construction/review-card', { name: 'Trex Customer',       date: '7/3/2024',   rating: 5, text: 'Knowledge of installation was incredible. Travis explains the steps necessary and was accurate about how long the project would take.' } ],
-	[ 'tbone-construction/review-card', { name: 'Lu Ann Gergen',       date: '1/17/2024',  rating: 5, text: 'Professionalism, Quality' } ],
-	[ 'tbone-construction/review-card', { name: 'Jose Rincon',         date: '12/11/2023', rating: 5, text: 'Travis came through. His work was great, he was very attentive and listened to all my concerns.' } ],
-	[ 'tbone-construction/review-card', { name: 'Karen Baldrige',      date: '2/16/2023',  rating: 5, text: 'Travis with T-Bone Construction is very professional, timely and priced very fairly.' } ],
-	[ 'tbone-construction/review-card', { name: 'Thomas Stears',       date: '1/30/2023',  rating: 5, text: 'Did good.' } ],
-	[ 'tbone-construction/review-card', { name: 'Home Depot Referral', date: '5/26/2022',  rating: 5, text: 'The fence is done well. It looks great and he put in a gate. It was completed in the time frame he stated (2 days).' } ],
-	[ 'tbone-construction/review-card', { name: 'Robert Humphrey',     date: '2/25/2022',  rating: 5, text: 'He replied even before we got home from the store! He has been very congenial and has worked hard to accommodate our budget.' } ],
-	[ 'tbone-construction/review-card', { name: 'Rick Sandison, MD',   date: '1/2/2022',   rating: 5, text: 'Travis did a great job. He is a very friendly person. I thought the price of his work was fair.' } ],
-	[ 'tbone-construction/review-card', { name: 'Tangela Schuerman',   date: '11/13/2021', rating: 5, text: 'Great Work. His attention to detail is spot on. He is very thorough with his job and makes sure you are happy.' } ],
-];
+const BLANK_REVIEW = { name: '', date: '', rating: 5, text: '' };
+
+/** Clickable 1–5 star picker matching the frontend rating row. */
+function StarRating( { rating, onChange } ) {
+	return (
+		<div className="flex items-center space-x-1 mb-6">
+			{ [ 1, 2, 3, 4, 5 ].map( ( n ) => (
+				<button
+					key={ n }
+					type="button"
+					aria-label={ `${ n } star${ n > 1 ? 's' : '' }` }
+					aria-pressed={ n <= rating }
+					onClick={ () => onChange( n ) }
+					className="p-0 bg-transparent border-0 cursor-pointer leading-none"
+				>
+					{ n <= rating ? (
+						<IconStarFill className="w-4 h-4 text-[#c25e24]" />
+					) : (
+						<Icon name="star" className="w-4 h-4 text-stone-300" />
+					) }
+				</button>
+			) ) }
+		</div>
+	);
+}
+
+function ReviewCard( { review, index, count, onChange, onRemove, onMove } ) {
+	const { name, date, rating, text } = review;
+
+	return (
+		<div className="bg-[#faf8f5] p-8 border border-stone-200 flex flex-col relative group">
+			{ /* Reorder / remove controls, revealed on hover */ }
+			<div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity z-20">
+				<Button
+					icon="arrow-up-alt2"
+					label={ __( 'Move up', 'tbone-construction' ) }
+					size="small"
+					disabled={ index === 0 }
+					onClick={ () => onMove( -1 ) }
+				/>
+				<Button
+					icon="arrow-down-alt2"
+					label={ __( 'Move down', 'tbone-construction' ) }
+					size="small"
+					disabled={ index === count - 1 }
+					onClick={ () => onMove( 1 ) }
+				/>
+				<Button
+					icon="trash"
+					label={ __( 'Remove review', 'tbone-construction' ) }
+					size="small"
+					isDestructive
+					onClick={ onRemove }
+				/>
+			</div>
+
+			<div className="absolute top-6 right-6 text-stone-200">
+				<Icon name="quote" className="w-12 h-12" />
+			</div>
+
+			<StarRating rating={ rating } onChange={ ( v ) => onChange( { rating: v } ) } />
+
+			<RichText
+				tagName="p"
+				className="text-stone-700 leading-relaxed mb-8 relative z-10 font-medium"
+				value={ text }
+				onChange={ ( v ) => onChange( { text: v } ) }
+				placeholder={ __( 'Review text…', 'tbone-construction' ) }
+			/>
+
+			<div className="mt-auto pt-6 border-t border-stone-300/50 flex justify-between items-end gap-3">
+				<RichText
+					tagName="span"
+					className="font-serif text-lg text-stone-900"
+					value={ name }
+					onChange={ ( v ) => onChange( { name: v } ) }
+					placeholder={ __( 'Name', 'tbone-construction' ) }
+				/>
+				<input
+					type="text"
+					value={ date }
+					onChange={ ( e ) => onChange( { date: e.target.value } ) }
+					placeholder={ __( 'Date', 'tbone-construction' ) }
+					className="text-xs font-bold text-stone-500 bg-transparent text-right w-24 border-0 p-0 focus:outline-none placeholder:text-stone-400"
+				/>
+			</div>
+		</div>
+	);
+}
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { heading, subheading, averageScore, averageLabel } = attributes;
+	const { heading, subheading, averageScore, averageLabel, reviews } = attributes;
 	const blockProps = useBlockProps( { className: 'animate-in fade-in pt-16 pb-24 bg-white relative' } );
 
-	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start' },
-		{
-			allowedBlocks: [ 'tbone-construction/review-card' ],
-			template:      TEMPLATE,
-			orientation:   'horizontal',
-		}
-	);
+	const updateReview = ( index, patch ) =>
+		setAttributes( { reviews: reviews.map( ( r, i ) => ( i === index ? { ...r, ...patch } : r ) ) } );
+
+	const addReview = () => setAttributes( { reviews: [ ...reviews, { ...BLANK_REVIEW } ] } );
+
+	const removeReview = ( index ) =>
+		setAttributes( { reviews: reviews.filter( ( _, i ) => i !== index ) } );
+
+	const moveReview = ( index, dir ) => {
+		const target = index + dir;
+		if ( target < 0 || target >= reviews.length ) return;
+		const next = [ ...reviews ];
+		[ next[ index ], next[ target ] ] = [ next[ target ], next[ index ] ];
+		setAttributes( { reviews: next } );
+	};
 
 	return (
 		<div { ...blockProps }>
@@ -50,7 +135,28 @@ export default function Edit( { attributes, setAttributes } ) {
 					</div>
 				</div>
 
-				<div { ...innerBlocksProps } />
+				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+					{ reviews.map( ( review, index ) => (
+						<ReviewCard
+							key={ index }
+							review={ review }
+							index={ index }
+							count={ reviews.length }
+							onChange={ ( patch ) => updateReview( index, patch ) }
+							onRemove={ () => removeReview( index ) }
+							onMove={ ( dir ) => moveReview( index, dir ) }
+						/>
+					) ) }
+
+					<button
+						type="button"
+						onClick={ addReview }
+						className="min-h-[220px] flex flex-col items-center justify-center gap-2 border-2 border-dashed border-stone-300 text-stone-500 font-medium cursor-pointer bg-transparent hover:border-[#c25e24] hover:text-[#c25e24] transition-colors"
+					>
+						<span className="text-3xl leading-none">+</span>
+						{ __( 'Add review', 'tbone-construction' ) }
+					</button>
+				</div>
 			</div>
 		</div>
 	);
