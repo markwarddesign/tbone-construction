@@ -11,6 +11,8 @@ $cta_text     = esc_html(    $attributes['ctaText']     ?? '' );
 $cta_url      = esc_url(     $attributes['ctaUrl']      ?? '/contact' );
 $image_url    = esc_url(     $attributes['imageUrl']    ?? '' );
 $image_alt    = esc_attr(    $attributes['imageAlt']    ?? '' );
+$show_trex    = ( $attributes['showTrex'] ?? true ) !== false;
+$trex_icon    = (string) ( $attributes['trexIcon'] ?? 'award' );
 $trex_title   = wp_kses_post( $attributes['trexTitle']   ?? '' );
 $trex_body    = wp_kses_post( $attributes['trexBody']    ?? '' );
 $trex_link    = esc_html(    $attributes['trexLinkText']?? '' );
@@ -57,9 +59,10 @@ $trex_url     = esc_url(     $attributes['trexLinkUrl'] ?? '#' );
           </div>
         <?php endif; ?>
 
+        <?php if ( $show_trex ) : ?>
         <div class="mt-0 relative lg:absolute lg:-bottom-10 lg:-left-10 bg-[#1f2926] text-white p-6 sm:p-8 z-30 shadow-xl w-full lg:max-w-sm border border-stone-700">
           <div class="flex items-center space-x-3 mb-4">
-            <?php echo tw_icon( 'award', 'w-8 h-8 text-[#eab308]' ); ?>
+            <?php if ( $trex_icon ) echo tw_icon( $trex_icon, 'w-8 h-8 text-[#eab308]' ); ?>
             <h3 class="text-xl font-serif text-[#eab308]"><?php echo $trex_title; ?></h3>
           </div>
           <p class="text-stone-300 text-sm mb-4 leading-relaxed"><?php echo $trex_body; ?></p>
@@ -70,6 +73,7 @@ $trex_url     = esc_url(     $attributes['trexLinkUrl'] ?? '#' );
             </a>
           <?php endif; ?>
         </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>

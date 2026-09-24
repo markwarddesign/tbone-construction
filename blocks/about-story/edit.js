@@ -1,7 +1,7 @@
 import { useBlockProps, RichText, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, TextControl, Button } from '@wordpress/components';
+import { PanelBody, TextControl, Button, ToggleControl, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import Icon from '../_shared/icons';
+import Icon, { ICON_OPTIONS } from '../_shared/icons';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const a = attributes;
@@ -24,6 +24,8 @@ export default function Edit( { attributes, setAttributes } ) {
 					{ a.imageUrl && <TextControl label="Alt" value={ a.imageAlt } onChange={ set( 'imageAlt' ) } /> }
 				</PanelBody>
 				<PanelBody title={ __( 'Trex Badge', 'tbone-construction' ) }>
+					<ToggleControl label={ __( 'Show Trex badge', 'tbone-construction' ) } checked={ a.showTrex !== false } onChange={ set( 'showTrex' ) } />
+					<SelectControl label={ __( 'Title Icon', 'tbone-construction' ) } value={ a.trexIcon } options={ [ { label: __( '— None —', 'tbone-construction' ), value: '' }, ...ICON_OPTIONS ] } onChange={ set( 'trexIcon' ) } />
 					<TextControl label="Link Text" value={ a.trexLinkText } onChange={ set( 'trexLinkText' ) } />
 					<TextControl label="Link URL"  value={ a.trexLinkUrl }  onChange={ set( 'trexLinkUrl' ) } />
 				</PanelBody>
@@ -67,9 +69,10 @@ export default function Edit( { attributes, setAttributes } ) {
 								</div>
 							) }
 
+							{ a.showTrex !== false && (
 							<div className="absolute -bottom-10 -left-10 bg-[#1f2926] text-white p-8 z-30 shadow-xl max-w-sm border border-stone-700">
 								<div className="flex items-center space-x-3 mb-4">
-									<Icon name="award" className="w-8 h-8 text-[#eab308]" />
+									{ a.trexIcon && <Icon name={ a.trexIcon } className="w-8 h-8 text-[#eab308]" /> }
 									<RichText tagName="h3" className="text-xl font-serif text-[#eab308]" value={ a.trexTitle } onChange={ set( 'trexTitle' ) } />
 								</div>
 								<RichText tagName="p" className="text-stone-300 text-sm mb-4 leading-relaxed" value={ a.trexBody } onChange={ set( 'trexBody' ) } />
@@ -78,6 +81,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									<Icon name="arrow-right" className="w-4 h-4 ml-2" />
 								</span>
 							</div>
+							) }
 						</div>
 					</div>
 				</div>

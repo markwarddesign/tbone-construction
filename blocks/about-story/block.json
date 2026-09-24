@@ -20,6 +20,8 @@
         "ctaUrl":      { "type": "string", "default": "/contact" },
         "imageUrl":    { "type": "string", "default": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
         "imageAlt":    { "type": "string", "default": "" },
+        "showTrex":    { "type": "boolean", "default": true },
+        "trexIcon":    { "type": "string", "default": "award" },
         "trexTitle":   { "type": "string", "default": "TrexPro® Partner" },
         "trexBody":    { "type": "string", "default": "As a TrexPro® professional and the area's only certified Trex RainEscape® installer, we offer a range of composite decking brands to match your preferences." },
         "trexLinkText":{ "type": "string", "default": "Order Trex Samples" },
