@@ -9,6 +9,7 @@ $cta1_text      = esc_html( $attributes['primaryCtaText']   ?? 'Discuss Your Pro
 $cta1_url       = esc_url(  $attributes['primaryCtaUrl']    ?? '/contact' );
 $cta2_text      = esc_html( $attributes['secondaryCtaText'] ?? 'View Our Craft' );
 $cta2_url       = esc_url(  $attributes['secondaryCtaUrl']  ?? '/services' );
+$trust_text     = wp_kses_post( $attributes['trustText'] ?? 'Trusted by dozens of homeowners across the region.' );
 $image1         = esc_url(  $attributes['image1Url']        ?? '' );
 $image2         = esc_url(  $attributes['image2Url']        ?? '' );
 ?>
@@ -41,6 +42,7 @@ $image2         = esc_url(  $attributes['image2Url']        ?? '' );
             </a>
           </div>
 
+          <?php if ( $trust_text ) : ?>
           <div class="mt-12 flex items-center gap-4 text-stone-500 font-medium text-sm">
             <div class="flex -space-x-3">
               <?php for ( $i = 0; $i < 4; $i++ ) : ?>
@@ -49,8 +51,9 @@ $image2         = esc_url(  $attributes['image2Url']        ?? '' );
                 </div>
               <?php endfor; ?>
             </div>
-            <p>Trusted by dozens of homeowners across the region.</p>
+            <p><?php echo $trust_text; ?></p>
           </div>
+          <?php endif; ?>
         </div>
 
         <?php $has_two = $image1 && $image2; ?>

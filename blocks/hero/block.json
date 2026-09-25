@@ -18,6 +18,7 @@
         "primaryCtaUrl":  { "type": "string", "default": "/contact" },
         "secondaryCtaText": { "type": "string", "default": "View Our Craft" },
         "secondaryCtaUrl":  { "type": "string", "default": "/services" },
+        "trustText":  { "type": "string", "default": "Trusted by dozens of homeowners across the region." },
         "image1Url":  { "type": "string", "default": "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
         "image2Url":  { "type": "string", "default": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" }
     },

@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n';
 import Icon from '../_shared/icons';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { badge, headingTop, headingAccent, body, primaryCtaText, primaryCtaUrl, secondaryCtaText, secondaryCtaUrl, image1Url, image2Url } = attributes;
+	const { badge, headingTop, headingAccent, body, primaryCtaText, primaryCtaUrl, secondaryCtaText, secondaryCtaUrl, trustText, image1Url, image2Url } = attributes;
 	const imageCount = image2Url ? '2' : '1';
 	const setImageCount = ( v ) => {
 		if ( v === '1' ) setAttributes( { image2Url: '' } );
@@ -82,6 +82,17 @@ export default function Edit( { attributes, setAttributes } ) {
 								<div className="flex flex-col sm:flex-row gap-5">
 									<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">{ primaryCtaText }</span>
 									<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-white border-stone-800 text-stone-800">{ secondaryCtaText }</span>
+								</div>
+
+								<div className="mt-12 flex items-center gap-4 text-stone-500 font-medium text-sm">
+									<div className="flex -space-x-3">
+										{ [ 0, 1, 2, 3 ].map( ( i ) => (
+											<div key={ i } className="w-10 h-10 rounded-full border-2 border-[#faf8f5] bg-stone-300 flex items-center justify-center overflow-hidden">
+												<Icon name="star" className="w-4 h-4 text-white" />
+											</div>
+										) ) }
+									</div>
+									<RichText tagName="p" placeholder={ __( 'Trust line (leave empty to hide)', 'tbone-construction' ) } value={ trustText } onChange={ ( v ) => setAttributes( { trustText: v } ) } />
 								</div>
 							</div>
 
