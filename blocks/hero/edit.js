@@ -1,10 +1,10 @@
 import { useBlockProps, RichText, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, TextControl, Button, RadioControl } from '@wordpress/components';
+import { PanelBody, TextControl, Button, RadioControl, ToggleControl, TextareaControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import Icon from '../_shared/icons';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { badge, headingTop, headingAccent, body, primaryCtaText, primaryCtaUrl, secondaryCtaText, secondaryCtaUrl, trustText, image1Url, image2Url } = attributes;
+	const { badge, headingTop, headingAccent, body, primaryCtaText, primaryCtaUrl, secondaryCtaText, secondaryCtaUrl, showTrust, trustText, image1Url, image2Url } = attributes;
 	const imageCount = image2Url ? '2' : '1';
 	const setImageCount = ( v ) => {
 		if ( v === '1' ) setAttributes( { image2Url: '' } );
@@ -20,6 +20,12 @@ export default function Edit( { attributes, setAttributes } ) {
 					<TextControl label="Primary CTA URL"    value={ primaryCtaUrl }    onChange={ ( v ) => setAttributes( { primaryCtaUrl: v } ) } />
 					<TextControl label="Secondary CTA Text" value={ secondaryCtaText } onChange={ ( v ) => setAttributes( { secondaryCtaText: v } ) } />
 					<TextControl label="Secondary CTA URL"  value={ secondaryCtaUrl }  onChange={ ( v ) => setAttributes( { secondaryCtaUrl: v } ) } />
+				</PanelBody>
+				<PanelBody title={ __( 'Trust Line', 'tbone-construction' ) }>
+					<ToggleControl label={ __( 'Show trust line', 'tbone-construction' ) } checked={ showTrust !== false } onChange={ ( v ) => setAttributes( { showTrust: v } ) } />
+					{ showTrust !== false && (
+						<TextareaControl label={ __( 'Trust line text', 'tbone-construction' ) } value={ trustText } onChange={ ( v ) => setAttributes( { trustText: v } ) } rows={ 2 } />
+					) }
 				</PanelBody>
 				<PanelBody title={ __( 'Images', 'tbone-construction' ) }>
 					<RadioControl
@@ -84,6 +90,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-white border-stone-800 text-stone-800">{ secondaryCtaText }</span>
 								</div>
 
+								{ showTrust !== false && (
 								<div className="mt-12 flex items-center gap-4 text-stone-500 font-medium text-sm">
 									<div className="flex -space-x-3">
 										{ [ 0, 1, 2, 3 ].map( ( i ) => (
@@ -92,8 +99,9 @@ export default function Edit( { attributes, setAttributes } ) {
 											</div>
 										) ) }
 									</div>
-									<RichText tagName="p" placeholder={ __( 'Trust line (leave empty to hide)', 'tbone-construction' ) } value={ trustText } onChange={ ( v ) => setAttributes( { trustText: v } ) } />
+									<RichText tagName="p" placeholder={ __( 'Trust line', 'tbone-construction' ) } value={ trustText } onChange={ ( v ) => setAttributes( { trustText: v } ) } />
 								</div>
+								) }
 							</div>
 
 							<div className="lg:col-span-6 relative h-[500px] hidden md:block">
