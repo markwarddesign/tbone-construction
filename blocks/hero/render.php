@@ -34,14 +34,20 @@ $image2         = esc_url(  $attributes['image2Url']        ?? '' );
 
           <p class="text-lg text-stone-600 mb-10 max-w-lg leading-relaxed font-medium"><?php echo $body; ?></p>
 
+          <?php if ( $cta1_text || $cta2_text ) : ?>
           <div class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
+            <?php if ( $cta1_text ) : ?>
             <a href="<?php echo $cta1_url; ?>" class="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white transition-all duration-200 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#7a3b16]">
               <?php echo $cta1_text; ?>
             </a>
+            <?php endif; ?>
+            <?php if ( $cta2_text ) : ?>
             <a href="<?php echo $cta2_url; ?>" class="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-white border-stone-800 text-stone-800 transition-all duration-200 hover:bg-stone-800 hover:text-white">
               <?php echo $cta2_text; ?>
             </a>
+            <?php endif; ?>
           </div>
+          <?php endif; ?>
 
           <?php if ( $show_trust && $trust_text ) : ?>
           <div class="mt-12 flex items-center gap-4 text-stone-500 font-medium text-sm">

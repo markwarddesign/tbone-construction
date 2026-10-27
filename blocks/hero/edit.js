@@ -16,6 +16,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'CTAs', 'tbone-construction' ) }>
+					<p style={ { marginTop: 0, color: '#757575' } }>{ __( 'Leave a button\'s text blank to hide it.', 'tbone-construction' ) }</p>
 					<TextControl label="Primary CTA Text"   value={ primaryCtaText }   onChange={ ( v ) => setAttributes( { primaryCtaText: v } ) } />
 					<TextControl label="Primary CTA URL"    value={ primaryCtaUrl }    onChange={ ( v ) => setAttributes( { primaryCtaUrl: v } ) } />
 					<TextControl label="Secondary CTA Text" value={ secondaryCtaText } onChange={ ( v ) => setAttributes( { secondaryCtaText: v } ) } />
@@ -85,10 +86,12 @@ export default function Edit( { attributes, setAttributes } ) {
 
 								<RichText tagName="p" className="text-lg text-stone-600 mb-10 max-w-lg leading-relaxed font-medium" value={ body } onChange={ ( v ) => setAttributes( { body: v } ) } />
 
+								{ ( primaryCtaText || secondaryCtaText ) && (
 								<div className="flex flex-col sm:flex-row gap-5">
-									<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">{ primaryCtaText }</span>
-									<span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-white border-stone-800 text-stone-800">{ secondaryCtaText }</span>
+									{ primaryCtaText && <span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-[#c25e24] border-[#c25e24] text-white">{ primaryCtaText }</span> }
+									{ secondaryCtaText && <span className="inline-flex items-center justify-center px-8 py-3.5 font-bold border-2 bg-white border-stone-800 text-stone-800">{ secondaryCtaText }</span> }
 								</div>
+								) }
 
 								{ showTrust !== false && (
 								<div className="mt-12 flex items-center gap-4 text-stone-500 font-medium text-sm">
